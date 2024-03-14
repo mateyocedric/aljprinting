@@ -1,145 +1,77 @@
+import { useState } from "react";
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
+
+import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import { DataGrid } from '@mui/x-data-grid';
-import ExpandIcon from '@mui/icons-material/Expand';
+import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-
+import Button from '@mui/material/Button';
 import { useSettingsContext } from 'src/components/settings';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
-
-const columns = [
-  { field: 'id', headerName: 'Id', width: 90 },
-  { field: 'date', headerName: 'Date', width: 150 },
-  {
-    field: 'order_id',
-    headerName: 'Order Id',
-    width: 150,
-  },
-  {
-    field: 'amount',
-    headerName: 'Amount',
-    width: 150,
-  },
-  {
-    field: 'discount',
-    headerName: 'Discount',
-    width: 150,
-  },
-  {
-    field: 'items',
-    headerName: 'Items',
-    width: 150,
-  },
-  {
-    field: 'renderCell',
-    headerName: 'Actions',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    renderCell: ({ row }) =>
-    <IconButton aria-label="delete" size="small" onClick={handleCard(row)}>
-      <ExpandIcon fontSize="inherit" />
-    </IconButton>,
-    } 
-];
-
-const rows = [
-  {
-    id: 25,
-    date: "2022-03-05 08:34",
-    order_id: 404400002,
-    amount: 725.0,
-    discount: "(12.0%)",
-    items: 2
-  },
-  {
-    id: 27,
-    date: "2022-03-05 09:54",
-    order_id: 404400003,
-    amount: 6000.0,
-    discount: "(12.0%)",
-    items: 1
-  },
-  {
-    id: 28,
-    date: "2022-03-06 10:21",
-    order_id: 404400004,
-    amount: 1500.0,
-    discount: "(10.0%)",
-    items: 1
-  },
-  {
-    id: 30,
-    date: "2022-03-06 12:45",
-    order_id: 404400005,
-    amount: 300.0,
-    discount: "(5.0%)",
-    items: 3
-  },
-  {
-    id: 32,
-    date: "2022-03-07 14:12",
-    order_id: 404400006,
-    amount: 900.0,
-    discount: "(8.0%)",
-    items: 2
-  },
-  {
-    id: 35,
-    date: "2022-03-08 16:30",
-    order_id: 404400007,
-    amount: 1800.0,
-    discount: "(15.0%)",
-    items: 1
-  },
-  {
-    id: 37,
-    date: "2022-03-09 18:42",
-    order_id: 404400008,
-    amount: 450.0,
-    discount: "(10.0%)",
-    items: 3
-  },
-  {
-    id: 40,
-    date: "2022-03-10 20:55",
-    order_id: 404400009,
-    amount: 1200.0,
-    discount: "(7.0%)",
-    items: 2
-  },
-  {
-    id: 42,
-    date: "2022-03-11 22:10",
-    order_id: 404400010,
-    amount: 2000.0,
-    discount: "(10.0%)",
-    items: 1
-  },
-  {
-    id: 45,
-    date: "2022-03-12 23:59",
-    order_id: 404400011,
-    amount: 300.0,
-    discount: "(5.0%)",
-    items: 3
-  }
-]
-
-
-const handleCard = (row) =>{
-  console.log(row)
-  
-}
 // ----------------------------------------------------------------------
 
-export default function InventoryView() {
+export default function PosView() {
   const settings = useSettingsContext();
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+  const columns = [
+    { field: 'name', headerName: 'name', flex: 1 },
+    {
+      field: 'stock',
+      headerName: 'stock',
+      flex: 1,
+    },
+    {
+      field: 'renderCell',
+      headerName: 'Actions',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      renderCell: ({ row }) =>
+      <IconButton aria-label="delete" size="small" onClick={handleClickOpen}>
+        <EditIcon fontSize="inherit" />
+      </IconButton>,
+      } 
+  ];
+  
+  const rows = [
+    { id: 1, name: "Bond Paper",stock:18 },
+    { id: 2, name: "Black Ink",stock:20 },
+    { id: 3, name: "Yellow Ink",stock:202 },
+    { id: 4, name: "Cyan Ink",stock:187 },
+    { id: 5, name: "Magenta Ink",stock:150 },
+    { id: 8, name: "Mug",stock:120 },
+    { id: 10, name: "T shirt L",stock:170 },
+    { id: 11, name: "T shirt S",stock:180 },
+  ];
+
+
+
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      <Typography variant="h4"> Sales </Typography>
+      <Typography variant="h4"> Inventory  </Typography>
+      <br/>
+      <TextField id="outlined-basic" label="Search Product" variant="outlined" />
+      <TextField id="outlined-basic" label="Quantity" variant="outlined" />
+      <Button variant="outlined">ADD ITEM</Button>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -154,6 +86,30 @@ export default function InventoryView() {
        
         disableRowSelectionOnClick
       />
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+
+        <DialogTitle id="alert-dialog-title">
+          Update Stock
+        </DialogTitle>
+
+        <DialogContent>
+          <Stack spacing={1} direction='row' mt={2}>
+            <TextField id="outlined-basic" label="Name" variant="outlined" />
+            <TextField id="outlined-basic" label="Stock" variant="outlined" />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Update</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
+    
+    
   );
 }

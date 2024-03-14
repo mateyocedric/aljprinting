@@ -1,12 +1,13 @@
-import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import { DataGrid } from '@mui/x-data-grid';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useSettingsContext } from 'src/components/settings';
 
 // ----------------------------------------------------------------------
@@ -14,12 +15,11 @@ import { useSettingsContext } from 'src/components/settings';
 export default function PosView() {
   const settings = useSettingsContext();
   const columns = [
-    { field: 'id', headerName: 'Id', width: 90 },
-    { field: 'name', headerName: 'name', width: 90 },
+    { field: 'name', headerName: 'name', flex: 1 },
     {
       field: 'description',
       headerName: 'Description',
-      width: 150,
+      flex: 1
     },
     {
       field: 'renderCell',

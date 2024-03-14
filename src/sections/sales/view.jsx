@@ -1,36 +1,36 @@
-import Box from '@mui/material/Box';
-import { alpha } from '@mui/material/styles';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import { DataGrid } from '@mui/x-data-grid';
+import { alpha } from '@mui/material/styles';
+
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import ExpandIcon from '@mui/icons-material/Expand';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 
 import { useSettingsContext } from 'src/components/settings';
 
 
 const columns = [
-  { field: 'id', headerName: 'Id', width: 90 },
-  { field: 'date', headerName: 'Date', width: 150 },
+  { field: 'date', headerName: 'Date', flex: 1 },
   {
     field: 'order_id',
     headerName: 'Order Id',
-    width: 150,
+    flex : 1,
   },
   {
     field: 'amount',
     headerName: 'Amount',
-    width: 150,
+    flex: 1,
   },
   {
     field: 'discount',
     headerName: 'Discount',
-    width: 150,
+    flex: 1,
   },
   {
     field: 'items',
     headerName: 'Items',
-    width: 150,
+    flex: 1,
   },
   {
     field: 'renderCell',

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import InventoryView from 'src/sections/pos/view';
+import InventoryView from 'src/sections/inventory/view';
 
 // ----------------------------------------------------------------------
 

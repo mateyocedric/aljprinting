@@ -1,20 +1,21 @@
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
-import Container from '@mui/material/Container';
-import { DataGrid } from '@mui/x-data-grid';
-import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-
+import {DataGrid} from '@mui/x-data-grid';
 import { useState } from "react";
 import { useSettingsContext } from 'src/components/settings';
+
+
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import EditIcon from '@mui/icons-material/Edit';
 import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 
 
 
@@ -22,24 +23,24 @@ import TextField from '@mui/material/TextField';
 
 
 export default function ProductListView() {
+  
   const columns = [
-    { field: 'id', headerName: 'Id', width: 90 },
-    { field: 'code', headerName: 'Code', width: 90 },
+    { field: 'code', headerName: 'Code', flex : 1 },
     {
       field: 'name',
       headerName: 'name',
-      width: 150,
+      flex: 1,
     },
     {
       field: 'description',
       headerName: 'description',
-      width: 150,
+      flex: 1,
     },
     {
       field: 'price',
       headerName: 'Price',
       type: 'number',
-      width: 110,
+      flex: 1,
     },
     {
       field: 'renderCell',
@@ -77,6 +78,8 @@ export default function ProductListView() {
   const handleClose = () => {
     setOpen(false);
   };
+
+
   const settings = useSettingsContext();
 
   return (
