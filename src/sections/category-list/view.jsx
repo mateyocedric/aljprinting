@@ -1,39 +1,29 @@
-import Box from '@mui/material/Box';
-import { alpha } from '@mui/material/styles';
 import { useState } from "react";
+
+import { useSettingsContext } from 'src/components/settings';
+
 import Container from '@mui/material/Container';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import { useSettingsContext } from 'src/components/settings';
-
-
-
-
+import Stack from '@mui/material/Stack';
 // ----------------------------------------------------------------------
-
-
-
-
-
 
 export default function ProductListView() {
 
   const columns = [
-    { field: 'id', headerName: 'Id', width: 90 },
-    { field: 'name', headerName: 'name', width: 90 },
+    { field: 'name', headerName: 'name', flex: 1 },
     {
       field: 'description',
       headerName: 'Description',
-      width: 150,
+      flex: 1
     },
     {
       field: 'renderCell',
@@ -41,12 +31,12 @@ export default function ProductListView() {
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       renderCell: ({ row }) =>
-      <IconButton aria-label="delete" size="small" onClick={handleClickOpen}>
-        <EditIcon fontSize="inherit" />
-      </IconButton>,
-      } 
+        <IconButton aria-label="delete" size="small" onClick={handleClickOpen}>
+          <EditIcon fontSize="inherit" />
+        </IconButton>,
+    }
   ];
-  
+
   const rows = [
     { id: 1, name: "Photocopy", description: "Laser Copy" },
     { id: 2, name: "Book Binding", description: "Soft, Ring, Hard Binding" },
@@ -83,10 +73,9 @@ export default function ProductListView() {
           },
         }}
         pageSizeOptions={[10]}
-       
+
         disableRowSelectionOnClick
       />
-
 
       <Dialog
         open={open}
@@ -94,20 +83,21 @@ export default function ProductListView() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+
         <DialogTitle id="alert-dialog-title">
           Update Category list
         </DialogTitle>
+
         <DialogContent>
-          <TextField id="outlined-basic" label="Name" variant="outlined" />
-          <TextField id="outlined-basic" label="Description" variant="outlined" />
+          <Stack spacing={1} direction='row' mt={2}>
+            <TextField id="outlined-basic" label="Name" variant="outlined" />
+            <TextField id="outlined-basic" label="Description" variant="outlined" />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Update</Button>
         </DialogActions>
       </Dialog>
-
-    
-    
 
     </Container>
   );
