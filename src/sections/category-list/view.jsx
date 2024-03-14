@@ -1,18 +1,32 @@
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
+import { useState } from "react";
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import { DataGrid } from '@mui/x-data-grid';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
 import { useSettingsContext } from 'src/components/settings';
+
+
+
 
 // ----------------------------------------------------------------------
 
-export default function PosView() {
-  const settings = useSettingsContext();
+
+
+
+
+
+export default function ProductListView() {
+
   const columns = [
     { field: 'id', headerName: 'Id', width: 90 },
     { field: 'name', headerName: 'name', width: 90 },
@@ -27,8 +41,8 @@ export default function PosView() {
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       renderCell: ({ row }) =>
-      <IconButton aria-label="delete" size="small" onClick={console.log("aa")}>
-        <DeleteOutlineIcon fontSize="inherit" />
+      <IconButton aria-label="delete" size="small" onClick={handleClickOpen}>
+        <EditIcon fontSize="inherit" />
       </IconButton>,
       } 
   ];
@@ -44,16 +58,20 @@ export default function PosView() {
     { id: 11, name: "ETC", description: "merchandise" },
   ];
 
+  const [open, setOpen] = useState(false);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const settings = useSettingsContext();
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      <Typography variant="h4"> POS </Typography>
-      <br/>
-      <TextField id="outlined-basic" label="Search Product" variant="outlined" />
-      <TextField id="outlined-basic" label="Quantity" variant="outlined" />
-      <Button variant="outlined">ADD ITEM</Button>
+      <Typography variant="h4"> Category List </Typography>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -68,6 +86,29 @@ export default function PosView() {
        
         disableRowSelectionOnClick
       />
+
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Update Category list
+        </DialogTitle>
+        <DialogContent>
+          <TextField id="outlined-basic" label="Name" variant="outlined" />
+          <TextField id="outlined-basic" label="Description" variant="outlined" />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Update</Button>
+        </DialogActions>
+      </Dialog>
+
+    
+    
+
     </Container>
   );
 }

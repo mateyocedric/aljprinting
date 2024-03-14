@@ -38,7 +38,7 @@ export default function OverviewAnalyticsView() {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AnalyticsWidgetSummary
             title="Weekly Sales"
             total={714000}
@@ -46,70 +46,57 @@ export default function OverviewAnalyticsView() {
           />
         </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
-          <AnalyticsWidgetSummary
-            title="New Users"
-            total={1352831}
-            color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
-          />
-        </Grid>
+         
 
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AnalyticsWidgetSummary
-            title="Item Orders"
-            total={1723315}
-            color="warning"
+            title="Weekly Customers"
+            total={129}
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
         </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={4}>
           <AnalyticsWidgetSummary
-            title="Bug Reports"
-            total={234}
-            color="error"
+            title="AVG SALES"
+            total={2341333}
+            color="warning"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />
         </Grid>
 
         <Grid xs={12} md={6} lg={8}>
           <AnalyticsWebsiteVisits
-            title="Website Visits"
+            title="Monthly Sales"
             subheader="(+43%) than last year"
             chart={{
               labels: [
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
+                '01/01/2024',
+                '02/01/2024',
+                '03/01/2024',
+                '04/01/2024',
+                '05/01/2024',
+                '06/01/2024',
+                '07/01/2024',
+                '08/01/2024',
+                '09/01/2024',
+                '10/01/2024',
+                '11/01/2024',
               ],
               series: [
                 {
-                  name: 'Team A',
+                  name: 'Sales',
                   type: 'column',
                   fill: 'solid',
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: 'Team B',
+                  name: 'Customers',
                   type: 'area',
                   fill: 'gradient',
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
-                {
-                  name: 'Team C',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                },
+                
               ],
             }}
           />
@@ -117,13 +104,13 @@ export default function OverviewAnalyticsView() {
 
         <Grid xs={12} md={6} lg={4}>
           <AnalyticsCurrentVisits
-            title="Current Visits"
+            title="Top Categories"
             chart={{
               series: [
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
+                { label: 'Print', value: 4344 },
+                { label: 'Bind', value: 5435 },
+                { label: 'Laminate', value: 1443 },
+                { label: 'School Supplies', value: 4443 },
               ],
             }}
           />
@@ -131,53 +118,22 @@ export default function OverviewAnalyticsView() {
 
         <Grid xs={12} md={6} lg={8}>
           <AnalyticsConversionRates
-            title="Conversion Rates"
-            subheader="(+43%) than last year"
+            title="Inventory Management"
             chart={{
               series: [
-                { label: 'Italy', value: 400 },
-                { label: 'Japan', value: 430 },
-                { label: 'China', value: 448 },
-                { label: 'Canada', value: 470 },
-                { label: 'France', value: 540 },
-                { label: 'Germany', value: 580 },
-                { label: 'South Korea', value: 690 },
+                { label: 'Printer Paper (Letter Size)', value: 400 },
+                { label: 'Printer Paper (Legal Size)', value: 430 },
+                { label: 'Ballpoint Pens (Blue)', value: 448 },
+                { label: 'Ballpoint Pens (Black)', value: 470 },
+                { label: 'Lamination Sheets (Letter Size)', value: 540 },
+                { label: 'Printer Ink (Color)', value: 580 },
+                { label: 'Printer Ink (Black)', value: 690 },
                 { label: 'Netherlands', value: 1100 },
-                { label: 'United States', value: 1200 },
-                { label: 'United Kingdom', value: 1380 },
+                { label: 'T-Shirt (Small, White)', value: 1200 },
+                { label: 'T-Shirt (Medium, Black)', value: 1380 },
               ],
             }}
           />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={4}>
-          <AnalyticsCurrentSubject
-            title="Current Subject"
-            chart={{
-              categories: ['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math'],
-              series: [
-                { name: 'Series 1', data: [80, 50, 30, 40, 100, 20] },
-                { name: 'Series 2', data: [20, 30, 40, 80, 20, 80] },
-                { name: 'Series 3', data: [44, 76, 78, 13, 43, 10] },
-              ],
-            }}
-          />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={8}>
-          <AnalyticsNews title="News" list={_analyticPosts} />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={4}>
-          <AnalyticsOrderTimeline title="Order Timeline" list={_analyticOrderTimeline} />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={4}>
-          <AnalyticsTrafficBySite title="Traffic by Site" list={_analyticTraffic} />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={8}>
-          <AnalyticsTasks title="Tasks" list={_analyticTasks} />
         </Grid>
       </Grid>
     </Container>

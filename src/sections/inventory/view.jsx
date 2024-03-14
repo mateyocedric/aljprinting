@@ -134,7 +134,7 @@ const handleCard = (row) =>{
 }
 // ----------------------------------------------------------------------
 
-export default function SalesView() {
+export default function InventoryView() {
   const settings = useSettingsContext();
 
   return (
