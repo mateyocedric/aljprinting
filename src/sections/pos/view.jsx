@@ -16,7 +16,7 @@ import Iconify from 'src/components/iconify/iconify';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useSettingsContext } from 'src/components/settings';
-
+import { ConfirmDialog } from 'src/components/custom-dialog';
 // ----------------------------------------------------------------------
 
 export default function PosView() {
@@ -40,14 +40,14 @@ export default function PosView() {
         // setProducts(response.data);
 
         let arr = response.data
-        arr = arr.map(item => {
-          return {
+        arr = arr.map(item => (
+          {
             id: item.id,
             price: item.price,
             label: item.name,
             description: item.description
-          };
-        });
+          }
+        ));
         setProducts(arr)
         console.log(arr)
       })
@@ -59,6 +59,12 @@ export default function PosView() {
 
   const [rows, setRows] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
+
+  const [isCheckOut, setIsCheckOut] = useState(false);
+
+  const handleCheckoutOnClose = () => {
+    setIsCheckOut(false);
+  };
 
 
   const settings = useSettingsContext();
@@ -196,7 +202,43 @@ export default function PosView() {
         />
       </Stack>
 
+      <ConfirmDialog
+        open={isCheckOut}
+        onClose={handleCheckoutOnClose}
+        title="Delete"
+        content={
+          <Box>
+            {rows.length === 0 ? (
+              <Typography variant="h6" sx={{ color: 'error.main' }}>
+                Cart is empty
+              </Typography>
+            ) : (
+              <Box>
 
+                <Typography variant="h6">
+                  Are you sure want to checkout?
+                </Typography>
+
+                <Typography variant="h6">
+                  Total: {cartTotal}
+                </Typography>
+
+              </Box>
+            )}
+          </Box>
+        }
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              handleCheckoutOnClose();
+            }}
+          >
+            Cancel
+          </Button>
+        }
+      />
     </Container>
   );
 }
