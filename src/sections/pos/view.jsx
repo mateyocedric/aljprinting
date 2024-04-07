@@ -178,6 +178,9 @@ export default function PosView() {
           <Button
             variant="outlined"
             startIcon={<Iconify icon="material-symbols-light:shopping-cart-checkout-rounded" />}
+            onClick={() => {
+              setIsCheckOut(true);
+            }}
           >
             Check out
           </Button>
