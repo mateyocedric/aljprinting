@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import { useSettingsContext } from 'src/components/settings';
 
@@ -15,10 +16,12 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+
 // ----------------------------------------------------------------------
 
 export default function ProductListView() {
 
+  const url  = "http://127.0.0.1:8000/api/category/"
   const columns = [
     { field: 'name', headerName: 'name', flex: 1 },
     {
@@ -32,13 +35,12 @@ export default function ProductListView() {
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       renderCell: ({ row }) =>
-        <IconButton aria-label="delete" size="small" onClick={handleClickOpen}>
+        <IconButton aria-label="delete" size="small" onClick={() =>handleClickOpen(row)}>
           <EditIcon fontSize="inherit" />
         </IconButton>,
     }
   ];
-
-  const rows = [
+  const initial = [
     { id: 1, name: "Photocopy", description: "Laser Copy" },
     { id: 2, name: "Book Binding", description: "Soft, Ring, Hard Binding" },
     { id: 3, name: "Tarpaulin", description: "Tarpaulin printing" },
@@ -49,10 +51,41 @@ export default function ProductListView() {
     { id: 11, name: "ETC", description: "merchandise" },
   ];
 
+  const [rows, setData] = useState(initial);
+
+  useEffect(() => {
+    // Make a GET request when the component mounts
+    axios.get(url)
+      .then(response => {
+        // Set the fetched data to the state variable
+        console.log(response.data)
+        setData(response.data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (row) => {
+    console.log(row)
+    setRowData(row)
+    setTextInputName(row.name)
+    setTextInputDesc(row.description)
     setOpen(true);
+  };
+
+  const [rowData, setRowData] = useState('');
+  const [textInputName, setTextInputName] = useState('');
+  const [textInputDesc, setTextInputDesc] = useState('');
+
+  const handleTextInputChangeName = event => {
+    setTextInputName(event.target.value);
+  };
+  const handleTextInputChangeDesc = event => {
+    setTextInputDesc(event.target.value);
   };
 
   const handleClose = () => {
@@ -91,8 +124,8 @@ export default function ProductListView() {
 
         <DialogContent>
           <Stack spacing={1} direction='row' mt={2}>
-            <TextField id="outlined-basic" label="Name" variant="outlined" />
-            <TextField id="outlined-basic" label="Description" variant="outlined" />
+            <TextField id="outlined-basic" label="Name" variant="outlined" value={textInputName}  onChange= {handleTextInputChangeName} />
+            <TextField id="outlined-basic" label="Description" variant="outlined" value={textInputDesc}  onChange= {handleTextInputChangeDesc} />
           </Stack>
         </DialogContent>
         <DialogActions>

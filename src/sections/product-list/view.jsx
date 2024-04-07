@@ -1,7 +1,10 @@
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import {DataGrid} from '@mui/x-data-grid';
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+
 import { useSettingsContext } from 'src/components/settings';
 
 
@@ -23,6 +26,8 @@ import Typography from '@mui/material/Typography';
 
 
 export default function ProductListView() {
+
+  const url = "http://127.0.0.1:8000/api/product-get-all/"
   
   const columns = [
     { field: 'code', headerName: 'Code', flex : 1 },
@@ -48,13 +53,13 @@ export default function ProductListView() {
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       renderCell: ({ row }) =>
-      <IconButton aria-label="delete" size="small" onClick={handleClickOpen}>
+      <IconButton aria-label="delete" size="small" onClick={ () => handleClickOpen(row)}>
         <EditIcon fontSize="inherit" />
       </IconButton>,
       } 
   ];
   
-  const rows = [
+  const initial = [
     { id: 1, code: "005", name: "Print Small Colored", description: "Small colored size document print", price: 3 },
     { id: 2, code: "004", name: "Print B&W-A3", description: "A3 Print B&W", price: 15 },
     { id: 3, code: "003", name: "Print B&W - Long", description: "Long Print B&W", price: 2 },
@@ -69,14 +74,67 @@ export default function ProductListView() {
     { id: 12, code: "012", name: "Photocopy Colored Long, Short, A4-Nor Colored Long, Short, A4 photocopy not L", description: "Colored Long, Short, A4 photocopy not Laminated", price: 15 }
   ];
 
+  const [rows, setData] = useState(initial);
+
+  useEffect(() => {
+    // Make a GET request when the component mounts
+    axios.get(url)
+      .then(response => {
+        // Set the fetched data to the state variable
+        setData(response.data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (row) => {
+    console.log(row)
+    setRowData(row)
+    setTextInputName(row.name)
+    setTextInputDesc(row.description)
+    setTextInputPrice(row.price)
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
+
+    try{
+      const response = await axios.post('http://127.0.0.1:8000/api/product-update/',{
+        id:rowData.id,
+        category_id:rowData.category_id,
+        code:111,
+        name:textInputName,
+        description:textInputDesc,
+        price:textInputPrice,
+
+      })
+      
+      console.log(response)
+    }catch( error) {
+      console.log(error);
+    }
+
+
     setOpen(false);
+  };
+
+  const [rowData, setRowData] = useState('');
+  const [textInputName, setTextInputName] = useState('');
+  const [textInputDesc, setTextInputDesc] = useState('');
+  const [textInputPrice, setTextInputPrice] = useState('');
+
+  const handleTextInputChangeName = event => {
+    setTextInputName(event.target.value);
+  };
+  const handleTextInputChangeDesc = event => {
+    setTextInputDesc(event.target.value);
+  };
+  const handleTextInputChangePrice = event => {
+    setTextInputPrice(event.target.value);
   };
 
 
@@ -102,7 +160,7 @@ export default function ProductListView() {
 
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={() =>setOpen(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -110,9 +168,9 @@ export default function ProductListView() {
           Update Product
         </DialogTitle>
         <DialogContent>
-          <TextField id="outlined-basic" label="Name" variant="outlined" />
-          <TextField id="outlined-basic" label="Description" variant="outlined" />
-          <TextField id="outlined-basic" label="Price" variant="outlined" />
+          <TextField id="outlined-basic" label="Name" variant="outlined" value={textInputName}  onChange= {handleTextInputChangeName}/>
+          <TextField id="outlined-basic" label="Description" variant="outlined" value={textInputDesc}  onChange= {handleTextInputChangeDesc}/>
+          <TextField id="outlined-basic" label="Price" variant="outlined" value={textInputPrice} onChange= {handleTextInputChangePrice}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Update</Button>
