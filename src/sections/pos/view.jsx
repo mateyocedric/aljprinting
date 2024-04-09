@@ -32,6 +32,18 @@ export default function PosView() {
   },
   ]);
 
+  const [rows, setRows] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [isCheckOut, setIsCheckOut] = useState(false);
+  const [selectProduct, setSelectProduct] = useState('');
+  const [selectQuantity, setQuantity] = useState('');
+  const [selectIdCount, setSelectIdCount] = useState(1);
+  const [selectCash, setCash] = useState('');
+  
+  
+
+
+
   useEffect(() => {
     // Make a GET request when the component mounts
     axios.get(url)
@@ -49,7 +61,6 @@ export default function PosView() {
           }
         ));
         setProducts(arr)
-        console.log(arr)
       })
       .catch(error => {
         // Handle error
@@ -57,12 +68,31 @@ export default function PosView() {
       });
   }, []);
 
-  const [rows, setRows] = useState([]);
-  const [cartTotal, setCartTotal] = useState(0);
-
-  const [isCheckOut, setIsCheckOut] = useState(false);
 
   const handleCheckoutOnClose = () => {
+    setIsCheckOut(false);
+  };
+
+  const handleCheckout = async() => {
+    try{
+      const response = await axios.post('http://127.0.0.1:8000/api/sales-add/',{
+        sales:{
+          grand_total:cartTotal,
+          tendered_amount:selectCash,
+          amount_change: selectCash - cartTotal
+        },
+        cart:rows
+      })
+      
+      console.log(response)
+    }catch( error) {
+      console.log(error);
+    }
+    console.log('asdf')
+    console.log(rows)
+    setCash(0)
+    setCartTotal(0)
+    setRows([])
     setIsCheckOut(false);
   };
 
@@ -103,12 +133,14 @@ export default function PosView() {
   ];
 
 
-  const [selectProduct, setSelectProduct] = useState('');
-  const [selectQuantity, setQuantity] = useState('');
-  const [selectIdCount, setSelectIdCount] = useState(1);
+
 
   const handleQuantityChange = event => {
     setQuantity(event.target.value);
+  };
+  
+  const handleCashChange = event => {
+    setCash(event.target.value);
   };
 
   const deleteRow = (idToDelete) => {
@@ -120,6 +152,7 @@ export default function PosView() {
     setQuantity('')
     setSelectProduct('')
   }
+
   const addToCart = () => {
     setSelectIdCount(selectIdCount + 1)
     const newRow = {
@@ -208,7 +241,7 @@ export default function PosView() {
       <ConfirmDialog
         open={isCheckOut}
         onClose={handleCheckoutOnClose}
-        title="Delete"
+        title="Checkout"
         content={
           <Box>
             {rows.length === 0 ? (
@@ -217,14 +250,19 @@ export default function PosView() {
               </Typography>
             ) : (
               <Box>
+                
 
                 <Typography variant="h6">
                   Are you sure want to checkout?
                 </Typography>
 
+                
+
                 <Typography variant="h6">
                   Total: {cartTotal}
                 </Typography>
+                <TextField id="outlined-basic" label="Enter Cash" variant="outlined" type="number" value={selectCash} onChange={handleCashChange} /> 
+
 
               </Box>
             )}
@@ -235,10 +273,10 @@ export default function PosView() {
             variant="contained"
             color="error"
             onClick={() => {
-              handleCheckoutOnClose();
+              handleCheckout();
             }}
           >
-            Cancel
+            Checkout
           </Button>
         }
       />

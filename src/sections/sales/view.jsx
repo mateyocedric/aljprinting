@@ -1,140 +1,127 @@
 import { DataGrid } from '@mui/x-data-grid';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { alpha } from '@mui/material/styles';
 
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import ExpandIcon from '@mui/icons-material/Expand';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { ConfirmDialog } from 'src/components/custom-dialog';
 
 import { useSettingsContext } from 'src/components/settings';
 
 
-const columns = [
-  { field: 'date', headerName: 'Date', flex: 1 },
-  {
-    field: 'order_id',
-    headerName: 'Order Id',
-    flex : 1,
-  },
-  {
-    field: 'amount',
-    headerName: 'Amount',
-    flex: 1,
-  },
-  {
-    field: 'discount',
-    headerName: 'Discount',
-    flex: 1,
-  },
-  {
-    field: 'items',
-    headerName: 'Items',
-    flex: 1,
-  },
-  {
-    field: 'renderCell',
-    headerName: 'Actions',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    renderCell: ({ row }) =>
-    <IconButton aria-label="delete" size="small" onClick={handleCard(row)}>
-      <ExpandIcon fontSize="inherit" />
-    </IconButton>,
-    } 
-];
 
-const rows = [
-  {
-    id: 25,
-    date: "2022-03-05 08:34",
-    order_id: 404400002,
-    amount: 725.0,
-    discount: "(12.0%)",
-    items: 2
-  },
-  {
-    id: 27,
-    date: "2022-03-05 09:54",
-    order_id: 404400003,
-    amount: 6000.0,
-    discount: "(12.0%)",
-    items: 1
-  },
-  {
-    id: 28,
-    date: "2022-03-06 10:21",
-    order_id: 404400004,
-    amount: 1500.0,
-    discount: "(10.0%)",
-    items: 1
-  },
-  {
-    id: 30,
-    date: "2022-03-06 12:45",
-    order_id: 404400005,
-    amount: 300.0,
-    discount: "(5.0%)",
-    items: 3
-  },
-  {
-    id: 32,
-    date: "2022-03-07 14:12",
-    order_id: 404400006,
-    amount: 900.0,
-    discount: "(8.0%)",
-    items: 2
-  },
-  {
-    id: 35,
-    date: "2022-03-08 16:30",
-    order_id: 404400007,
-    amount: 1800.0,
-    discount: "(15.0%)",
-    items: 1
-  },
-  {
-    id: 37,
-    date: "2022-03-09 18:42",
-    order_id: 404400008,
-    amount: 450.0,
-    discount: "(10.0%)",
-    items: 3
-  },
-  {
-    id: 40,
-    date: "2022-03-10 20:55",
-    order_id: 404400009,
-    amount: 1200.0,
-    discount: "(7.0%)",
-    items: 2
-  },
-  {
-    id: 42,
-    date: "2022-03-11 22:10",
-    order_id: 404400010,
-    amount: 2000.0,
-    discount: "(10.0%)",
-    items: 1
-  },
-  {
-    id: 45,
-    date: "2022-03-12 23:59",
-    order_id: 404400011,
-    amount: 300.0,
-    discount: "(5.0%)",
-    items: 3
-  }
-]
-
-
-const handleCard = (row) =>{
-  console.log(row)
-  
-}
 // ----------------------------------------------------------------------
 
 export default function SalesView() {
+  const columns = [
+    { field: 'date', headerName: 'Date', flex: 1 },
+    {
+      field: 'id',
+      headerName: 'Order Id',
+      flex : 1,
+    },
+    {
+      field: 'grand_total',
+      headerName: 'Grand Total',
+      flex: 1,
+    },
+    {
+      field: 'tendered_amount',
+      headerName: 'Tendered Amount',
+      flex: 1,
+    },
+    {
+      field: 'amount_change',
+      headerName: 'Amount Change',
+      flex: 1,
+    },
+    
+    {
+      field: 'renderCell',
+      headerName: 'Actions',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      renderCell: ({ row }) =>
+      <IconButton aria-label="delete" size="small" onClick={ () => handleCard(row)}>
+        <ExpandIcon fontSize="inherit" />
+      </IconButton>,
+      } 
+  ];
+
+  const cartDataColumns = [
+    {
+      field: 'product_id',
+      headerName: 'Grand Total',
+      flex: 1,
+    },
+    {
+      field: 'price',
+      headerName: 'price',
+      flex: 1,
+    },
+    {
+      field: 'qty',
+      headerName: 'quantity',
+      flex: 1,
+    },
+    {
+      field: 'total',
+      headerName: 'total',
+      flex: 1,
+    }
+  ];
+  
+  const [rows, setData] = useState([]);
+  const [selectRowTotal, setSelectRowTotal] = useState('');
+  const [selectRowChange, setSelectRowChange] = useState('');
+  const [selectRowCash, setSelectRowCash] = useState('');
+  
+  useEffect(() => {
+    // Make a GET request when the component mounts
+    axios.get('http://127.0.0.1:8000/api/sales-get-all/')
+      .then(response => {
+        // Set the fetched data to the state variable
+        console.log(response.data)
+        setData(response.data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  
+  
+  const [cartData, setCartData] = useState([]); 
+  const handleCard = async(row) =>{
+
+    console.log("row",row.grand_total)
+    setSelectRowTotal(row.grand_total)
+    setSelectRowCash(row.tendered_amount)
+    setSelectRowChange(row.amount_change)
+    setCheckOut(true)
+    try{
+      const aaa =  'http://127.0.0.1:8000/api/sales-item-get/?id='
+      const response = await axios.get(aaa.concat(row.id))
+      console.log("respone",response.data)
+      setCartData(response.data)
+    }catch( error) {
+      console.log(error);
+    }
+  }
+
+  const [isCheckOut, setCheckOut] = useState(false)
+
+  const handleCheckoutOnClose = () =>{
+    setCheckOut(false)
+  }
+
+
   const settings = useSettingsContext();
 
   return (
@@ -154,6 +141,46 @@ export default function SalesView() {
        
         disableRowSelectionOnClick
       />
+      <ConfirmDialog
+        open={isCheckOut}
+        fullWidth
+        onClose={handleCheckoutOnClose}
+        title="Receipt"
+        content={
+          <Box>
+            {rows.length === 0 ? (
+              <Typography variant="h6" sx={{ color: 'error.main' }}>
+                Cart is empty
+              </Typography>
+            ) : (
+              <Box>
+
+                <DataGrid
+                  rows={cartData}
+                  columns={cartDataColumns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 10,
+                      },
+                    },
+                  }}
+                  pageSizeOptions={[10]}
+                
+                  disableRowSelectionOnClick
+                />
+                
+                <Typography variant="h6">CASH : {selectRowCash}</Typography>
+                <Typography variant="h6">TOTAL :{selectRowTotal}</Typography>
+                <Typography variant="h6">CHANGE :{selectRowChange}</Typography>
+
+              </Box>
+            )}
+          </Box>
+        }
+      />
+
+
     </Container>
   );
 }

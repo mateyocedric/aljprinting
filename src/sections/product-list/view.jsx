@@ -3,8 +3,9 @@ import { alpha } from '@mui/material/styles';
 import {DataGrid} from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Autocomplete from '@mui/material/Autocomplete';
 
-
+import Stack from '@mui/material/Stack';
 import { useSettingsContext } from 'src/components/settings';
 
 
@@ -19,6 +20,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { async } from '@firebase/util';
 
 
 
@@ -30,7 +32,7 @@ export default function ProductListView() {
   const url = "http://127.0.0.1:8000/api/product-get-all/"
   
   const columns = [
-    { field: 'code', headerName: 'Code', flex : 1 },
+    { field: 'id', headerName: 'id', flex : 1 },
     {
       field: 'name',
       headerName: 'name',
@@ -39,6 +41,11 @@ export default function ProductListView() {
     {
       field: 'description',
       headerName: 'description',
+      flex: 1,
+    },
+    {
+      field: 'category_id',
+      headerName: 'category',
       flex: 1,
     },
     {
@@ -76,6 +83,8 @@ export default function ProductListView() {
 
   const [rows, setData] = useState(initial);
 
+
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     // Make a GET request when the component mounts
     axios.get(url)
@@ -87,6 +96,31 @@ export default function ProductListView() {
         // Handle error
         console.error('Error fetching data:', error);
       });
+
+
+    // categories request
+    axios.get("http://127.0.0.1:8000/api/category/")
+    .then(response => {
+      // Set the fetched data to the state variable
+
+      let arr = response.data
+        arr = arr.map(item => (
+          {
+            id: item.id,
+            label: item.name,
+
+          }
+        ));
+        
+
+      setCategories(arr);
+    })
+    .catch(error => {
+      // Handle error
+      console.error('Error fetching data:', error);
+    });
+
+
   }, []);
 
   const [open, setOpen] = useState(false);
@@ -97,15 +131,20 @@ export default function ProductListView() {
     setTextInputName(row.name)
     setTextInputDesc(row.description)
     setTextInputPrice(row.price)
+    const index = categories.findIndex(item => item.label.toLowerCase() === row.category_id.toLowerCase());
+
+    console.log("category",categories[index])
+    setSelectCategory(categories[index])
     setOpen(true);
   };
 
   const handleClose = async () => {
 
     try{
+      console.log(selectCategory)
       const response = await axios.post('http://127.0.0.1:8000/api/product-update/',{
         id:rowData.id,
-        category_id:rowData.category_id,
+        category_id:selectCategory.id,
         code:111,
         name:textInputName,
         description:textInputDesc,
@@ -122,10 +161,36 @@ export default function ProductListView() {
     setOpen(false);
   };
 
+
+  const handleAdd = async () => {
+
+    try{
+      const response = await axios.post('http://127.0.0.1:8000/api/product-update/',{
+        id:rowData.id,
+        category_id:selectCategory.id,
+        code:111,
+        name:textInputName,
+        description:textInputDesc,
+        price:textInputPrice,
+
+      })
+      
+      console.log(response)
+    }catch( error) {
+      console.log(error);
+    }
+
+
+    setOpen(false);
+  };
+
+  
+
   const [rowData, setRowData] = useState('');
   const [textInputName, setTextInputName] = useState('');
   const [textInputDesc, setTextInputDesc] = useState('');
   const [textInputPrice, setTextInputPrice] = useState('');
+  const [selectCategory, setSelectCategory] = useState('');
 
   const handleTextInputChangeName = event => {
     setTextInputName(event.target.value);
@@ -137,12 +202,49 @@ export default function ProductListView() {
     setTextInputPrice(event.target.value);
   };
 
+  const [openAdd, setOpenAdd] = useState(false);
+  const handleAddProduct = () =>{
+    setTextInputName('')
+    setTextInputDesc('')
+    setTextInputPrice('')
+    setSelectCategory('')
+    setOpenAdd(true)
+    console.log(selectCategory)
+  }
+
+  const handleAddClose = async() =>{
+
+    try{
+      const response = await axios.post('http://127.0.0.1:8000/api/product-add/',{
+        category_id:selectCategory.id,
+        code:111,
+        name:textInputName,
+        description:textInputDesc,
+        price:textInputPrice,
+      })
+      
+      console.log(response)
+    }catch( error) {
+      console.log(error);
+    }
+
+    setOpenAdd(false)
+
+  }
+
 
   const settings = useSettingsContext();
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      <Typography variant="h4"> Product List </Typography>
+
+      <Stack
+        direction="row"
+        spacing={1}
+      >
+        <Typography variant="h4"> Product List </Typography>
+        <Button variant="outlined" onClick={handleAddProduct}>ADD Product</Button>
+      </Stack>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -168,12 +270,60 @@ export default function ProductListView() {
           Update Product
         </DialogTitle>
         <DialogContent>
-          <TextField id="outlined-basic" label="Name" variant="outlined" value={textInputName}  onChange= {handleTextInputChangeName}/>
-          <TextField id="outlined-basic" label="Description" variant="outlined" value={textInputDesc}  onChange= {handleTextInputChangeDesc}/>
-          <TextField id="outlined-basic" label="Price" variant="outlined" value={textInputPrice} onChange= {handleTextInputChangePrice}/>
+          <Stack
+            direction="row"
+            spacing={1}
+          >
+            <TextField id="outlined-basic" label="Name" variant="outlined" value={textInputName}  onChange= {handleTextInputChangeName}/>
+            <TextField id="outlined-basic" label="Description" variant="outlined" value={textInputDesc}  onChange= {handleTextInputChangeDesc}/>
+            <TextField id="outlined-basic" label="Price" variant="outlined" value={textInputPrice} onChange= {handleTextInputChangePrice}/>
+            <Autocomplete
+              disablePortal
+              value={selectCategory}
+              onChange={(event, value) => setSelectCategory(value)}
+              id="combo-box-demo"
+              options={categories}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Categories" />}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Update</Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={openAdd}
+        onClose={() =>setOpenAdd(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Add Product
+        </DialogTitle>
+        <DialogContent>
+          <Stack
+            direction="row"
+            spacing={1}
+          >
+            <TextField id="outlined-basic" label="Name" variant="outlined" value={textInputName}  onChange= {handleTextInputChangeName}/>
+            <TextField id="outlined-basic" label="Description" variant="outlined" value={textInputDesc}  onChange= {handleTextInputChangeDesc}/>
+            <TextField id="outlined-basic" label="Price" variant="outlined" value={textInputPrice} onChange= {handleTextInputChangePrice}/>
+            <Autocomplete
+              disablePortal
+              value={selectCategory}
+              onChange={(event, value) => setSelectCategory(value)}
+              id="combo-box-demo"
+              options={categories}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="Categories" />}
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAddClose}>Add</Button>
         </DialogActions>
       </Dialog>
 
