@@ -1,4 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2';
+import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import React, { useState, useEffect } from 'react';
@@ -82,6 +84,7 @@ export default function OverviewAnalyticsView() {
         ));
 
       setInventory(arr);
+      console.log('arr',arr)
     })
     .catch(error => {
       console.error('Error fetching data:', error);
@@ -89,7 +92,6 @@ export default function OverviewAnalyticsView() {
 
     axios.get('http://127.0.0.1:8000/api/get-sales-data/')
     .then(response => {
-      console.log(response.data)
       setSalesData(response.data);
     })
     .catch(error => {
@@ -98,7 +100,6 @@ export default function OverviewAnalyticsView() {
 
     axios.get('http://127.0.0.1:8000/api/get-month-data/')
     .then(response => {
-      console.log(response.data)
       setMonthData(response.data);
     })
     .catch(error => {
@@ -112,6 +113,15 @@ export default function OverviewAnalyticsView() {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+
+
+      <Stack sx={{ width: '100%' }} spacing={1}>
+      {
+        Inventory.map( (item,i)=> ( item.value < 20 ? <Alert key={i} severity="error"> {item.label} has only {item.value} stock left </Alert> : console.log('a')   ))
+      }
+      </Stack>
+
+      
       <Typography
         variant="h4"
         sx={{
@@ -125,7 +135,7 @@ export default function OverviewAnalyticsView() {
         <Grid xs={12} sm={6} md={4}>
           <AnalyticsWidgetSummary
             title="This month sale"
-            total={salesData.month}
+            total={ String( salesData.month)}
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
           />
         </Grid>
@@ -135,7 +145,7 @@ export default function OverviewAnalyticsView() {
         <Grid xs={12} sm={6} md={4}>
           <AnalyticsWidgetSummary
             title="Yesterdays Sales"
-            total={salesData.previous}
+            total={ String(salesData.previous)}
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
         </Grid>
@@ -143,7 +153,7 @@ export default function OverviewAnalyticsView() {
         <Grid xs={12} sm={6} md={4}>
           <AnalyticsWidgetSummary
             title="Todays Sales"
-            total={salesData.today}
+            total={ String(salesData.today)}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />

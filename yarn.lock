@@ -1816,25 +1816,25 @@
     fontkit "^2.0.2"
     is-url "^1.2.4"
 
-"@react-pdf/image@^2.3.4":
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/@react-pdf/image/-/image-2.3.4.tgz#c55a1cec4946e9b77a16ec40bf50b8f1df55068d"
-  integrity sha512-IE34l7gfTdaxXe3XR9240xMZsFdxF1myIwmEWK28XoeTaucUPAUyOiNcFSGRT59vNuZVBuakYz3BlGGrkvAPVQ==
+"@react-pdf/image@^2.3.6":
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/@react-pdf/image/-/image-2.3.6.tgz#72444842517f8b0c08bbf4c216d8b41110498d16"
+  integrity sha512-7iZDYZrZlJqNzS6huNl2XdMcLFUo68e6mOdzQeJ63d5eApdthhSHBnkGzHfLhH5t8DCpZNtClmklzuLL63ADfw==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@react-pdf/png-js" "^2.3.1"
     cross-fetch "^3.1.5"
-    jay-peg "^1.0.0"
+    jay-peg "^1.0.2"
 
-"@react-pdf/layout@^3.11.2":
-  version "3.11.2"
-  resolved "https://registry.yarnpkg.com/@react-pdf/layout/-/layout-3.11.2.tgz#ea41c8d70ba7f39d7819065764d80aae8c008038"
-  integrity sha512-5EiHJ+Eb0odqnkWll9pWbTp+dwH1QRm7mOXDMiklqIWK98eI7e3cEae5Dgr0TtdnB7KgPW9Tvul2CwRJTwq54A==
+"@react-pdf/layout@^3.11.5":
+  version "3.11.5"
+  resolved "https://registry.yarnpkg.com/@react-pdf/layout/-/layout-3.11.5.tgz#c1caf04e8f58dbecde56ffed7fd5a56d63f3683c"
+  integrity sha512-VLOzWIODUKw0ZTrS9XDkwl3q1OHKG8qd6OyCZZ7Q8/SijAh9ho70HEc/f1ffBFmM0nGrKMG0M3L0/7z1XKmOGw==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@react-pdf/fns" "2.2.1"
-    "@react-pdf/image" "^2.3.4"
-    "@react-pdf/pdfkit" "^3.1.6"
+    "@react-pdf/image" "^2.3.6"
+    "@react-pdf/pdfkit" "^3.1.9"
     "@react-pdf/primitives" "^3.1.1"
     "@react-pdf/stylesheet" "^4.2.4"
     "@react-pdf/textkit" "^4.4.1"
@@ -1844,17 +1844,17 @@
     queue "^6.0.1"
     yoga-layout "^2.0.1"
 
-"@react-pdf/pdfkit@^3.1.6":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-3.1.6.tgz#ab9cfd6734917c0185c307be766a2f61c2995bb0"
-  integrity sha512-U96VVhphniDBsLbmeJHgEml15nng8cr90mmEfPATh98gsqg6wev0avBr4k9XPjLdaN1f2xTXD4VdlaMYJZ+n7Q==
+"@react-pdf/pdfkit@^3.1.9":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-3.1.9.tgz#c6af1ec6880668404fa927dfe66118bafa50a54c"
+  integrity sha512-9ZPF9gGkBWLcEc+HMkbJ5bHsxenej5Kz9YWWs10EeS8d5v6UF027Ffl+75HXZmgiO5iLVONTYj06LnyYZ95XMQ==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@react-pdf/png-js" "^2.3.1"
     browserify-zlib "^0.2.0"
     crypto-js "^4.2.0"
     fontkit "^2.0.2"
-    jay-peg "^1.0.0"
+    jay-peg "^1.0.2"
     vite-compatible-readable-stream "^3.6.1"
 
 "@react-pdf/png-js@^2.3.1":
@@ -1885,15 +1885,15 @@
     parse-svg-path "^0.1.2"
     svg-arc-to-cubic-bezier "^3.2.0"
 
-"@react-pdf/renderer@^3.1.14":
-  version "3.3.8"
-  resolved "https://registry.yarnpkg.com/@react-pdf/renderer/-/renderer-3.3.8.tgz#8574bb61e2b77a074587c070d46b4b4e8564bb7d"
-  integrity sha512-wJESEZCNNbog4MxDjRgKtgdmyGm+lDce9cMX2THRs1Jltckq3M8N0yt/fkvGyB8nwiDPtEBOsz9JKlw5vLidbw==
+"@react-pdf/renderer@^3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@react-pdf/renderer/-/renderer-3.4.2.tgz#f13f7d291a1af108ed543c38c2efb86a4afb9f21"
+  integrity sha512-YNwioiN97SOqEdCskfixsru+Y7hHbUjyayYFALKwWiAnoTOckfpacfGyIgXZXtZiwPYwnSGYTaJRxpjC7seCkA==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@react-pdf/font" "^2.4.4"
-    "@react-pdf/layout" "^3.11.2"
-    "@react-pdf/pdfkit" "^3.1.6"
+    "@react-pdf/layout" "^3.11.5"
+    "@react-pdf/pdfkit" "^3.1.9"
     "@react-pdf/primitives" "^3.1.1"
     "@react-pdf/render" "^3.4.3"
     "@react-pdf/types" "^2.4.1"
@@ -4985,10 +4985,10 @@ iterator.prototype@^1.1.2:
     reflect.getprototypeof "^1.0.4"
     set-function-name "^2.0.1"
 
-jay-peg@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/jay-peg/-/jay-peg-1.0.1.tgz#f09b8615886cb1ce61c364c16e203f566eeaa779"
-  integrity sha512-zBfjkGbuuNXk8JW+rEePpPEbRRjupS8q+5yPak7kjy3e2GvvNwsLle9okEFvfGyZA6HvtSSiYrVd1/jgnYebaQ==
+jay-peg@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/jay-peg/-/jay-peg-1.0.2.tgz#17a54d386e472f5f313f3d6e88770b170ea569f4"
+  integrity sha512-fyV3NVvv6pTys/3BTapBUGAWAuU9rM2gRcgijZHzptd5KKL+s+S7hESFN+wOsbDH1MzFwdlRAXi0aGxS6uiMKg==
   dependencies:
     restructure "^3.0.0"
 

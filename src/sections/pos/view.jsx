@@ -1,22 +1,31 @@
-import { alpha } from '@mui/material/styles';
-import { DataGrid } from '@mui/x-data-grid';
+
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Autocomplete from '@mui/material/Autocomplete';
 
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
-
-import Iconify from 'src/components/iconify/iconify';
-
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { DataGrid } from '@mui/x-data-grid';
 import { useSettingsContext } from 'src/components/settings';
 import { ConfirmDialog } from 'src/components/custom-dialog';
+import {PDFViewer} from "@react-pdf/renderer"
+
+
+
+
+import Box from '@mui/material/Box';
+import axios from 'axios';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import Iconify from 'src/components/iconify/iconify';
+import PDFfile from 'src/components/PDFFile';
+import TextField from '@mui/material/TextField';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Autocomplete from '@mui/material/Autocomplete';
+import DialogActions from '@mui/material/DialogActions';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
+
+
 // ----------------------------------------------------------------------
 
 export default function PosView() {
@@ -39,7 +48,10 @@ export default function PosView() {
   const [selectQuantity, setQuantity] = useState('');
   const [selectIdCount, setSelectIdCount] = useState(1);
   const [selectCash, setCash] = useState('');
-  
+  const [change, setChange] = useState(0);
+  const [isPrint , setIsPrint] = useState(false)
+  const [response , setResponse] = useState('')
+
   
 
 
@@ -60,7 +72,19 @@ export default function PosView() {
             description: item.description
           }
         ));
+
+        arr = arr.sort( (a, b) => {
+          // Convert both names to lowercase
+          const nameA = a.label.toLowerCase();
+          const nameB = b.label.toLowerCase();
+          
+          // Compare the names
+          if (nameA < nameB) return -1;
+          if (nameA > nameB) return 1;
+          return 0; // Names are equal
+        })
         setProducts(arr)
+        
       })
       .catch(error => {
         // Handle error
@@ -83,18 +107,24 @@ export default function PosView() {
         },
         cart:rows
       })
-      
-      console.log(response)
+      setResponse(response.data)
+      console.log(response.data)
     }catch( error) {
       console.log(error);
     }
     console.log('asdf')
     console.log(rows)
-    setCash(0)
+    setIsPrint(true)
+  };
+
+  const handleIsPrintClose = () =>{
+    setCash('')
     setCartTotal(0)
     setRows([])
     setIsCheckOut(false);
-  };
+    setIsPrint(false)
+
+  }
 
 
   const settings = useSettingsContext();
@@ -141,6 +171,7 @@ export default function PosView() {
   
   const handleCashChange = event => {
     setCash(event.target.value);
+    setChange(  event.target.value - cartTotal)
   };
 
   const deleteRow = (idToDelete) => {
@@ -205,7 +236,12 @@ export default function PosView() {
               renderInput={(params) => <TextField {...params} label="Product" />}
             />
             <TextField id="outlined-basic" label="Quantity" variant="outlined" type="number" value={selectQuantity} onChange={handleQuantityChange} />
-            <Button variant="outlined" onClick={addToCart}>ADD ITEM</Button>
+            <Button 
+              variant="outlined"
+              disabled={ (selectProduct === '' || selectQuantity ==='') } 
+              onClick={addToCart}
+            >ADD ITEM</Button>
+
           </Stack>
 
           <Button
@@ -262,6 +298,10 @@ export default function PosView() {
                   Total: {cartTotal}
                 </Typography>
                 <TextField id="outlined-basic" label="Enter Cash" variant="outlined" type="number" value={selectCash} onChange={handleCashChange} /> 
+                
+                <Typography variant="h6">
+                  Change : {change}
+                </Typography>
 
 
               </Box>
@@ -270,6 +310,7 @@ export default function PosView() {
         }
         action={
           <Button
+            disabled={ selectCash - cartTotal <= 0  }
             variant="contained"
             color="error"
             onClick={() => {
@@ -280,6 +321,35 @@ export default function PosView() {
           </Button>
         }
       />
+      <Dialog
+        open={isPrint}
+        fullWidth
+        onClose={handleIsPrintClose}
+        title="Receipt"
+      >  
+          <Box>
+           
+           <PDFViewer style={{ width: "100%", height: "800px" }}>
+              <PDFfile data={{
+                id: response.id,
+                date: response.date,
+                time: '12:30 PM',
+                items: rows,
+                total: cartTotal,
+                cash: selectCash,
+                change: selectCash - cartTotal
+              }} />
+            </PDFViewer>
+          
+              <DialogActions>
+                <Button autoFocus onClick={ handleIsPrintClose}>
+                  Cancel
+                </Button>
+              </DialogActions>
+            
+          </Box>
+        
+      </Dialog> 
     </Container>
   );
 }
