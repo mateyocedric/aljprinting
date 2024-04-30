@@ -29,7 +29,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 // ----------------------------------------------------------------------
 
 export default function PosView() {
-  const url = "http://127.0.0.1:8000/api/product-get-all/"
+  const url = "https://alj-django.onrender.com/api/product-get-all/"
 
 
 
@@ -99,7 +99,7 @@ export default function PosView() {
 
   const handleCheckout = async() => {
     try{
-      const response = await axios.post('http://127.0.0.1:8000/api/sales-add/',{
+      const response = await axios.post('https://alj-django.onrender.com/api/sales-add/',{
         sales:{
           grand_total:cartTotal,
           tendered_amount:selectCash,

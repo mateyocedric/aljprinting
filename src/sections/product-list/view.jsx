@@ -28,7 +28,7 @@ import DialogActions from '@mui/material/DialogActions';
 
 export default function ProductListView() {
 
-  const url = "http://127.0.0.1:8000/api/product-get-all/"
+  const url = "https://alj-django.onrender.com/api/product-get-all/"
   
   const columns = [
     { field: 'id', headerName: 'id', flex : 1 },
@@ -98,7 +98,7 @@ export default function ProductListView() {
 
 
     // categories request
-    axios.get("http://127.0.0.1:8000/api/category/")
+    axios.get("https://alj-django.onrender.com/api/category/")
     .then(response => {
       // Set the fetched data to the state variable
 
@@ -141,7 +141,7 @@ export default function ProductListView() {
 
     try{
       console.log(selectCategory)
-      const response = await axios.post('http://127.0.0.1:8000/api/product-update/',{
+      const response = await axios.post('https://alj-django.onrender.com/api/product-update/',{
         id:rowData.id,
         category_id:selectCategory.id,
         code:111,
@@ -164,7 +164,7 @@ export default function ProductListView() {
   const handleAdd = async () => {
 
     try{
-      const response = await axios.post('http://127.0.0.1:8000/api/product-update/',{
+      const response = await axios.post('https://alj-django.onrender.com/api/product-update/',{
         id:rowData.id,
         category_id:selectCategory.id,
         code:111,
@@ -214,7 +214,7 @@ export default function ProductListView() {
   const handleAddClose = async() =>{
 
     try{
-      const response = await axios.post('http://127.0.0.1:8000/api/product-add/',{
+      const response = await axios.post('https://alj-django.onrender.com/api/product-add/',{
         category_id:selectCategory.id,
         code:111,
         name:textInputName,

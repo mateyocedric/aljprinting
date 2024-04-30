@@ -63,7 +63,7 @@ export default function OverviewAnalyticsView() {
   const[monthData,setMonthData] = useState(initialMonth)
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/get-top-categories/')
+    axios.get('https://alj-django.onrender.com/api/get-top-categories/')
       .then(response => {
         SetTopCategories(response.data);
       })
@@ -71,7 +71,7 @@ export default function OverviewAnalyticsView() {
         console.error('Error fetching data:', error);
       });
 
-    axios.get('http://127.0.0.1:8000/api/materials-get-all/')
+    axios.get('https://alj-django.onrender.com/api/materials-get-all/')
     .then(response => {
 
       let arr = response.data
@@ -90,7 +90,7 @@ export default function OverviewAnalyticsView() {
       console.error('Error fetching data:', error);
     });
 
-    axios.get('http://127.0.0.1:8000/api/get-sales-data/')
+    axios.get('https://alj-django.onrender.com/api/get-sales-data/')
     .then(response => {
       setSalesData(response.data);
     })
@@ -98,7 +98,7 @@ export default function OverviewAnalyticsView() {
       console.error('Error fetching data:', error);
     });
 
-    axios.get('http://127.0.0.1:8000/api/get-month-data/')
+    axios.get('https://alj-django.onrender.com/api/get-month-data/')
     .then(response => {
       setMonthData(response.data);
     })

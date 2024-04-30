@@ -91,7 +91,7 @@ export default function SalesView() {
   
   useEffect(() => {
     // Make a GET request when the component mounts
-    axios.get('http://127.0.0.1:8000/api/sales-get-all/')
+    axios.get('https://alj-django.onrender.com/api/sales-get-all/')
       .then(response => {
         // Set the fetched data to the state variable
         console.log(response.data)
@@ -112,7 +112,7 @@ export default function SalesView() {
     setSelectRow(row)
     setCheckOut(true)
     try{
-      const aaa =  'http://127.0.0.1:8000/api/sales-item-get/?id='
+      const aaa = 'https://alj-django.onrender.com/api/sales-item-get/?id='
       const response = await axios.get(aaa.concat(row.id))
       console.log("respone",response.data)
       setCartData(response.data)

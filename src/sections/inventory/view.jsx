@@ -42,7 +42,7 @@ export default function PosView() {
 
   useEffect(() => {
     // Make a GET request when the component mounts
-    axios.get('http://127.0.0.1:8000/api/materials-get-all/')
+    axios.get('https://alj-django.onrender.com/api/materials-get-all/')
       .then(response => {
         // Set the fetched data to the state variable
         console.log(response.data)
@@ -104,7 +104,7 @@ export default function PosView() {
 
   const handleUpdate= async() => {
     try{
-      const response = await axios.post('http://127.0.0.1:8000/api/materials-update/',{
+      const response = await axios.post('https://alj-django.onrender.com/api/materials-update/',{
         id:rowData.id,
         name:textInputName,
         description:textInputDesc,

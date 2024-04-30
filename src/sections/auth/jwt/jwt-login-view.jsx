@@ -63,11 +63,14 @@ export default function JwtLoginView() {
     try {
       await login?.(data.email, data.password);
 
-      router.push(returnTo || PATH_AFTER_LOGIN);
+      console.log( data.email, data.password )
+      // router.replace('/dashboard/pos');
+      // router.push(PATH_AFTER_LOGIN);
+      // router.push(returnTo || PATH_AFTER_LOGIN);
     } catch (error) {
       console.error(error);
-      reset();
-      setErrorMsg(typeof error === 'string' ? error : error.message);
+      // reset();
+      // setErrorMsg(typeof error === 'string' ? error : error.message);
     }
   });
 

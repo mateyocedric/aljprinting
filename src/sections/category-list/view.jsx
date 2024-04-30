@@ -20,7 +20,7 @@ import DialogActions from '@mui/material/DialogActions';
 
 export default function ProductListView() {
 
-  const url  = "http://127.0.0.1:8000/api/category/"
+  const url  = "https://alj-django.onrender.com/api/category/"
   const columns = [
     { field: 'name', headerName: 'name', flex: 1 },
     {
