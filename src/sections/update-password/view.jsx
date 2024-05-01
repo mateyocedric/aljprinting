@@ -26,6 +26,7 @@ import { useSnackbar } from 'notistack';
 export default function UpdatePasswordView() {
 
   const { enqueueSnackbar } = useSnackbar();
+  
 
   const UpdateUserSchema = Yup.object().shape({
     password: Yup.string()
@@ -55,9 +56,19 @@ export default function UpdatePasswordView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-
+      const id2 = localStorage.getItem('user_id')
+      // console.log(id)
+      // console.log('asdfasdfasdf',data)
       // login axios post
-      await axios.post('http://localhost:8000/api/update-password/', data);
+
+      const send = {
+        id: id2,
+        password: data.password
+      }
+      console.log(send)
+      
+      await axios.post('https://alj-django.onrender.com/api/user-update/', send);
+      // await axios.post('http://127.0.0.1:8000/api/user-update/', send);
 
       reset();
 
@@ -70,7 +81,7 @@ export default function UpdatePasswordView() {
 
   return (
     <Container maxWidth={false}>
-      <Typography variant="h4"> POS </Typography>
+      <Typography variant="h4"> Settings </Typography>
       <FormProvider methods={methods} onSubmit={onSubmit}>
         <Box
           sx={{

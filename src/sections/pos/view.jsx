@@ -138,7 +138,8 @@ export default function PosView() {
     {
       field: 'price',
       headerName: 'Price',
-      flex: 1
+      flex: 1,
+      // valueGetter:  (value,row) =>{  return "Php" + value }
     },
     {
       field: 'quantity',
