@@ -2,6 +2,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
+import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import {DataGrid} from '@mui/x-data-grid';
 import Dialog from '@mui/material/Dialog';
@@ -127,6 +128,7 @@ export default function ProductListView() {
   }, []);
 
   const [open, setOpen] = useState(false);
+  const [isDeleted , setIsDeleted] = useState(false)
 
   const handleClickOpen = (row) => {
     console.log(row)
@@ -163,9 +165,28 @@ export default function ProductListView() {
     setOpen(false);
   };
 
-  const handleDelete = (row) => {
+  const handleDelete = async(row) => {
 
     console.log(row)
+
+    try{
+      console.log(selectCategory)
+      const response = await axios.post('http://127.0.0.1:8000/api/product-delete/',{
+        id:row.id,
+      })
+      
+      console.log(response)
+      console.log('deleted')
+      setIsDeleted(true)
+
+      setTimeout(() => {
+        // Your code to execute after delay
+        console.log("Delayed code executed after 5 seconds");
+        setIsDeleted(false)
+      }, 5000);
+    }catch( error) {
+      console.log(error);
+    }
 
 
   }
@@ -223,10 +244,20 @@ export default function ProductListView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
 
+      {
+      isDeleted? 
+        <Alert icon={false} severity="success">
+          Item Deleted
+        </Alert>: console.log('no delete')
+        }
+
+
       <Stack
         direction="row"
         spacing={1}
       >
+
+
         <Typography variant="h4"> Product List </Typography>
         <Button variant="outlined" onClick={handleAddProduct}>ADD Product</Button>
       </Stack>
