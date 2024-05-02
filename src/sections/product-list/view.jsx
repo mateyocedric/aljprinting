@@ -171,7 +171,7 @@ export default function ProductListView() {
 
     try{
       console.log(selectCategory)
-      const response = await axios.post('http://127.0.0.1:8000/api/product-delete/',{
+      const response = await axios.post('https://alj-django.onrender.com/api/product-delete/',{
         id:row.id,
       })
       

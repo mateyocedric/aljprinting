@@ -1,11 +1,7 @@
 
 import axios from 'axios';
+import { PDFViewer } from "@react-pdf/renderer"
 import React, { useState, useEffect } from 'react';
-
-import {PDFViewer} from "@react-pdf/renderer"
-
-import PDFfile from 'src/components/PDFFile';
-import { useSettingsContext } from 'src/components/settings';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -20,6 +16,10 @@ import ExpandIcon from '@mui/icons-material/Expand';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 
+// eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
+import PDFfile from 'src/components/PDFFile';
+import { useSettingsContext } from 'src/components/settings';
+
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ export default function SalesView() {
     {
       field: 'id',
       headerName: 'Order Id',
-      flex : 1,
+      flex: 1,
     },
     {
       field: 'grand_total',
@@ -46,17 +46,17 @@ export default function SalesView() {
       headerName: 'Amount Change (Php)',
       flex: 1,
     },
-    
+
     {
       field: 'renderCell',
       headerName: 'Actions',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       renderCell: ({ row }) =>
-      <IconButton aria-label="delete" size="small" onClick={ () => handleCard(row)}>
-        <ExpandIcon fontSize="inherit" />
-      </IconButton>,
-      } 
+        <IconButton aria-label="delete" size="small" onClick={() => handleCard(row)}>
+          <ExpandIcon fontSize="inherit" />
+        </IconButton>,
+    }
   ];
 
   const cartDataColumns = [
@@ -81,15 +81,15 @@ export default function SalesView() {
       flex: 1,
     }
   ];
-  
+
   const [rows, setData] = useState([]);
   const [selectRow, setSelectRow] = useState('');
-  const [isPrint , setIsPrint] = useState(true)
+  const [isPrint, setIsPrint] = useState(true)
 
   const togglePrint = () => {
     setIsPrint(!isPrint);
   };
-  
+
   useEffect(() => {
     // Make a GET request when the component mounts
     axios.get('https://alj-django.onrender.com/api/sales-get-all/')
@@ -104,27 +104,27 @@ export default function SalesView() {
       });
   }, []);
 
-  
-  
-  const [cartData, setCartData] = useState([]); 
-  const handleCard = async(row) =>{
+
+
+  const [cartData, setCartData] = useState([]);
+  const handleCard = async (row) => {
 
     console.log(row)
     setSelectRow(row)
     setCheckOut(true)
-    try{
+    try {
       const aaa = 'https://alj-django.onrender.com/api/sales-item-get/?id='
       const response = await axios.get(aaa.concat(row.id))
-      console.log("respone",response.data)
+      console.log("respone", response.data)
       setCartData(response.data)
-    }catch( error) {
+    } catch (error) {
       console.log(error);
     }
   }
 
   const [isCheckOut, setCheckOut] = useState(false)
 
-  const handleCheckoutOnClose = () =>{
+  const handleCheckoutOnClose = () => {
     setCheckOut(false)
     setIsPrint(true)
   }
@@ -145,7 +145,7 @@ export default function SalesView() {
           },
         }}
         pageSizeOptions={[10]}
-       
+
         disableRowSelectionOnClick
       />
       <Dialog
@@ -153,54 +153,54 @@ export default function SalesView() {
         fullWidth
         onClose={handleCheckoutOnClose}
         title="Receipt"
-      >  
-          <Box>
-            {isPrint? (
+      >
+        <Box>
+          {isPrint ? (
             <Box> <DialogTitle>Receipt</DialogTitle>
-            <DialogContent> 
- 
-                 <DataGrid
-                   rows={cartData}
-                   columns={cartDataColumns}
-                   initialState={{
-                     pagination: {
-                       paginationModel: {
-                         pageSize: 10,
-                       },
-                     },
-                   }}
-                   pageSizeOptions={[10]}
-                 
-                   disableRowSelectionOnClick
-                 />
-                 
-                 <Typography variant="h6">CASH : {selectRow.tendered_amount}</Typography>
-                 <Typography variant="h6">TOTAL :{selectRow.grand_total}</Typography>
-                 <Divider/>
-                 <Typography variant="h6">CHANGE :{selectRow.amount_change}</Typography>
-             </DialogContent> </Box>) :  (<PDFViewer style={{ width: "100%", height: "800px" }}>
-                  {console.log("receiptData", selectRow)}
-                  <PDFfile data={{
-                    id: selectRow.id,
-                    date: selectRow.date,
-                    time: '12:30 PM',
-                    items: cartData,
-                    total: selectRow.grand_total,
-                    cash: selectRow.tendered_amount,
-                    change: selectRow.amount_change 
-                  }} />
-                </PDFViewer>)  }
-          
-              <DialogActions>
-                <Button autoFocus onClick={handleCheckoutOnClose}>
-                  Cancel
-                </Button>
-                <Button onClick={ ()=> togglePrint() }>Print</Button>
-              </DialogActions>
-            
-          </Box>
-        
-      </Dialog> 
+              <DialogContent>
+
+                <DataGrid
+                  rows={cartData}
+                  columns={cartDataColumns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 10,
+                      },
+                    },
+                  }}
+                  pageSizeOptions={[10]}
+
+                  disableRowSelectionOnClick
+                />
+
+                <Typography variant="h6">CASH : {selectRow.tendered_amount}</Typography>
+                <Typography variant="h6">TOTAL :{selectRow.grand_total}</Typography>
+                <Divider />
+                <Typography variant="h6">CHANGE :{selectRow.amount_change}</Typography>
+              </DialogContent> </Box>) : (<PDFViewer style={{ width: "100%", height: "800px" }}>
+                {console.log("receiptData", selectRow)}
+                <PDFfile data={{
+                  id: selectRow.id,
+                  date: selectRow.date,
+                  time: '12:30 PM',
+                  items: cartData,
+                  total: selectRow.grand_total,
+                  cash: selectRow.tendered_amount,
+                  change: selectRow.amount_change
+                }} />
+              </PDFViewer>)}
+
+          <DialogActions>
+            <Button autoFocus onClick={handleCheckoutOnClose}>
+              Cancel
+            </Button>
+            <Button onClick={() => togglePrint()}>Print</Button>
+          </DialogActions>
+
+        </Box>
+
+      </Dialog>
 
 
     </Container>

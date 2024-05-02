@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
 });
 
 
+<<<<<<< HEAD
 const PDFfile = (data) => (
   <Document>
     {/* {console.log("data", data.data.date)} */}
@@ -68,17 +69,55 @@ const PDFfile = (data) => (
         <Text style={styles.text}>id: {data.data.id}</Text>
         <Text style={styles.text}>Date: {data.data.date}</Text>
       </View>
+=======
+const PDFfile = (dataa) => {
 
-      <View style={styles.section}>
+  // {id: 25, date: '2022-03-05T00:34:10.674000Z', time: '12:30 PM', items: Array(2), total: 725, …}
+  const { data } = dataa
+  const { id, date, items, total, change, cash } = data
+  // const data = useContext(DataContext);
+  // const [data, setData] = useState('');
+  console.log(1 + 1)
+  return (
+    <Document>
+      {/* {console.log("data", data.data.date)} */}
+      <Page style={styles.page}>
+        <View style={styles.section}>
+          <Text style={styles.header}>ALJ PRINTS AND MERCHANDISE</Text>
+          <Text style={styles.subHeader}>Thank you for your purchase!</Text>
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.text}>id: {id}</Text>
+          <Text style={styles.text}>Date: {date}</Text>
+        </View>
 
-        <Text style={[styles.text, styles.bold]}>Items Purchased:</Text>
-        <View style={styles.item}>
-          <Text > item</Text>
-          <Text > qty</Text>
-          <Text >price</Text>
-          <Text > sub total </Text>
+        <View style={styles.section}>
+
+          <Text style={[styles.text, styles.bold]}>Items Purchased:</Text>
+          <View style={styles.item}>
+            <Text > item</Text>
+            <Text > qty</Text>
+            <Text >price</Text>
+            <Text > sub total </Text>
+          </View>
+          <View style={styles.line} />
+
+          {items.map((item, index) => (
+            <View key={index} style={styles.item}>
+              <Text > {item.product_id}{item.name}</Text>
+              <Text > {item.qty} {item.quantity}</Text>
+              <Text > {item.price}</Text>
+              <Text > {item.total}</Text>
+            </View>
+
+
+          ))}
+>>>>>>> eec1a70fc4d33fd675f4bbe005a5c688ca5f70c3
+
+
         </View>
         <View style={styles.line} />
+<<<<<<< HEAD
 
         {data.data.items.map((item, index) => (
           <View key={index} style={styles.item}>
@@ -105,6 +144,20 @@ const PDFfile = (data) => (
     </Page>
   </Document>
 )
+=======
+        <View style={styles.section}>
+          <Text style={styles.total}>Total: Php{total}</Text>
+          <Text style={styles.total}>Cash: Php{cash}</Text>
+          <Text style={styles.total}>Change: Php{change}</Text>
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.text}>Thank you for shopping with us!</Text>
+        </View>
+      </Page>
+    </Document>
+  )
+}
+>>>>>>> eec1a70fc4d33fd675f4bbe005a5c688ca5f70c3
 
 
 export default PDFfile;

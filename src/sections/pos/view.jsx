@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 
 import axios from 'axios';
 import { PDFViewer } from "@react-pdf/renderer"
@@ -16,7 +17,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import DialogActions from '@mui/material/DialogActions';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-import PDFfile from 'src/components/PDFFile';
+// eslint-disable-next-line import/no-named-as-default-member
+import PDFfile from 'src/components/PDFFile'
 import Iconify from 'src/components/iconify/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import { ConfirmDialog } from 'src/components/custom-dialog';
@@ -59,7 +61,7 @@ export default function PosView() {
       // eslint-disable-next-line no-shadow
       .then(response => {
 
-        let arr = response2.data
+        let arr = response.data
         arr = arr.map(item => (
           {
             id: item.id,
