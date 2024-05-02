@@ -1,6 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
-
 // import { PATH_AFTER_LOGIN } from 'src/config-global';
 import { authRoutes } from './auth';
 import { authDemoRoutes } from './auth-demo';
@@ -12,10 +11,10 @@ import { dashboardRoutes } from './dashboard';
 export default function Router() {
   return useRoutes([
     // SET INDEX PAGE WITH SKIP HOME PAGE
-    // {
-    //   path: '/',
-    //   element: <Navigate to={PATH_AFTER_LOGIN} replace />,
-    // },
+    {
+      path: '/',
+      element: <Navigate to='/auth/jwt/login' replace />,
+    },
 
     // ----------------------------------------------------------------------
 

@@ -60,7 +60,7 @@ export default function AccountPopover() {
     }
   };
 
- 
+
 
   return (
     <>
@@ -96,12 +96,9 @@ export default function AccountPopover() {
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            Admin
           </Typography>
 
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user?.email}
-          </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -115,6 +112,17 @@ export default function AccountPopover() {
         </Stack> */}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
+
+        <MenuItem
+          onClick={() => {
+
+            popover.onClose();
+            router.push('/dashboard/update-password');
+          }}
+          sx={{ m: 1, fontWeight: 'fontWeightBold' }}
+        >
+          Update Password
+        </MenuItem>
 
         <MenuItem
           onClick={handleLogout}
