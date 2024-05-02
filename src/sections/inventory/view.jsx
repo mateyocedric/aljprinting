@@ -124,7 +124,6 @@ export default function PosView() {
       <Typography variant="h4">Materials Inventory  </Typography>
       <br/>
       
-      <Button variant="outlined">ADD ITEM</Button>
       <DataGrid
         rows={rows}
         columns={columns}

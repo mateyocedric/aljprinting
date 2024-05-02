@@ -1,7 +1,6 @@
 import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
@@ -61,10 +60,7 @@ export default function AccountPopover() {
     }
   };
 
-  const handleClickItem = (path) => {
-    popover.onClose();
-    router.push(path);
-  };
+ 
 
   return (
     <>

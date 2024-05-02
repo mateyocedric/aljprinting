@@ -10,8 +10,13 @@ import {
   Card,
   Stack,
   Container,
+<<<<<<< Updated upstream
   Typography,
   CardHeader,
+=======
+  CardHeader,
+  Typography,
+>>>>>>> Stashed changes
   CardContent
 } from '@mui/material';
 
@@ -19,6 +24,11 @@ import FormProvider, {
   RHFTextField,
 } from '../../components/hook-form'
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 // ----------------------------------------------------------------------
 
 export default function UpdatePasswordView() {

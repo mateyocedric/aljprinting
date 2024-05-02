@@ -1,12 +1,11 @@
 
 import axios from 'axios';
-
 import React, { useState, useEffect } from 'react';
 
-import { useSettingsContext } from 'src/components/settings';
-import PDFfile from 'src/components/PDFFile';
-
 import {PDFViewer} from "@react-pdf/renderer"
+
+import PDFfile from 'src/components/PDFFile';
+import { useSettingsContext } from 'src/components/settings';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -22,8 +21,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 
 
-
-
 // ----------------------------------------------------------------------
 
 export default function SalesView() {
@@ -36,17 +33,17 @@ export default function SalesView() {
     },
     {
       field: 'grand_total',
-      headerName: 'Grand Total',
+      headerName: 'Grand Total (Php)',
       flex: 1,
     },
     {
       field: 'tendered_amount',
-      headerName: 'Tendered Amount',
+      headerName: 'Tendered Amount (Php)',
       flex: 1,
     },
     {
       field: 'amount_change',
-      headerName: 'Amount Change',
+      headerName: 'Amount Change (Php)',
       flex: 1,
     },
     
@@ -88,6 +85,10 @@ export default function SalesView() {
   const [rows, setData] = useState([]);
   const [selectRow, setSelectRow] = useState('');
   const [isPrint , setIsPrint] = useState(true)
+
+  const togglePrint = () => {
+    setIsPrint(!isPrint);
+  };
   
   useEffect(() => {
     // Make a GET request when the component mounts
@@ -194,7 +195,7 @@ export default function SalesView() {
                 <Button autoFocus onClick={handleCheckoutOnClose}>
                   Cancel
                 </Button>
-                <Button onClick={ ()=>{ isPrint ? setIsPrint(false):setIsPrint(true) }}>Print</Button>
+                <Button onClick={ ()=> togglePrint() }>Print</Button>
               </DialogActions>
             
           </Box>

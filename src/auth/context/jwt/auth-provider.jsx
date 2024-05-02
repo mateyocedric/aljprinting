@@ -1,9 +1,9 @@
+
+import axios2 from 'axios';
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, useReducer, useCallback } from 'react';
 
 import axios, { endpoints } from 'src/utils/axios';
-import axios2 from 'axios';
-
 
 import { AuthContext } from './auth-context';
 import { setSession, isValidToken } from './utils';

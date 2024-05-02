@@ -59,7 +59,7 @@ export default function PosView() {
       // eslint-disable-next-line no-shadow
       .then(response => {
 
-        let arr = response.data
+        let arr = response2.data
         arr = arr.map(item => (
           {
             id: item.id,
@@ -134,7 +134,7 @@ export default function PosView() {
     },
     {
       field: 'price',
-      headerName: 'Price',
+      headerName: 'Price (Php)',
       flex: 1
     },
     {
@@ -144,7 +144,7 @@ export default function PosView() {
     },
     {
       field: 'total',
-      headerName: 'Total',
+      headerName: 'Total (Php)',
       flex: 1
     },
     {

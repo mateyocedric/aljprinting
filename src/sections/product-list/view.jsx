@@ -2,12 +2,8 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-import {DataGrid} from '@mui/x-data-grid';
-
-import { useSettingsContext } from 'src/components/settings';
-
-
 import Stack from '@mui/material/Stack';
+import {DataGrid} from '@mui/x-data-grid';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,7 +15,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Autocomplete from '@mui/material/Autocomplete';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import DeleteIcon from '@mui/icons-material/Delete';
 
+import { useSettingsContext } from 'src/components/settings';
 
 
 
@@ -49,7 +47,7 @@ export default function ProductListView() {
     },
     {
       field: 'price',
-      headerName: 'Price',
+      headerName: 'Price (Php)',
       type: 'number',
       flex: 1,
     },
@@ -59,9 +57,15 @@ export default function ProductListView() {
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       renderCell: ({ row }) =>
+      <>
       <IconButton aria-label="delete" size="small" onClick={ () => handleClickOpen(row)}>
         <EditIcon fontSize="inherit" />
-      </IconButton>,
+      </IconButton>
+      
+      <IconButton aria-label="delete" size="small" onClick={ () => handleDelete(row)}>
+        <DeleteIcon fontSize="inherit" />
+      </IconButton>
+      </>,
       } 
   ];
   
@@ -156,33 +160,15 @@ export default function ProductListView() {
       console.log(error);
     }
 
-
     setOpen(false);
   };
 
+  const handleDelete = (row) => {
 
-  const handleAdd = async () => {
-
-    try{
-      const response = await axios.post('https://alj-django.onrender.com/api/product-update/',{
-        id:rowData.id,
-        category_id:selectCategory.id,
-        code:111,
-        name:textInputName,
-        description:textInputDesc,
-        price:textInputPrice,
-
-      })
-      
-      console.log(response)
-    }catch( error) {
-      console.log(error);
-    }
+    console.log(row)
 
 
-    setOpen(false);
-  };
-
+  }
   
 
   const [rowData, setRowData] = useState('');

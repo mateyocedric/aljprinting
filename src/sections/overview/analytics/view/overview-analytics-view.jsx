@@ -1,16 +1,11 @@
-import Grid from '@mui/material/Unstable_Grid2';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import {
-  _analyticTasks,
-  _analyticPosts,
-  _analyticTraffic,
-  _analyticOrderTimeline,
-} from 'src/_mock';
 
 import { useSettingsContext } from 'src/components/settings';
 
