@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import ProductListView from 'src/sections/product-list/view';
+import CategoryListView from 'src/sections/category-list/view';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export default function CategoryListPage() {
         <title> Dashboard: Category List</title>
       </Helmet>
 
-      <ProductListView />
+      <CategoryListView />
     </>
   );
 }

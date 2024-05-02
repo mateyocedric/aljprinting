@@ -63,17 +63,20 @@ export default function JwtLoginView() {
     try {
       await login?.(data.email, data.password);
 
-      router.push(returnTo || PATH_AFTER_LOGIN);
+      console.log( data.email, data.password )
+      // router.replace('/dashboard/pos');
+      // router.push(PATH_AFTER_LOGIN);
+      // router.push(returnTo || PATH_AFTER_LOGIN);
     } catch (error) {
       console.error(error);
-      reset();
-      setErrorMsg(typeof error === 'string' ? error : error.message);
+      // reset();
+      // setErrorMsg(typeof error === 'string' ? error : error.message);
     }
   });
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Sign in to Minimal</Typography>
+      <Typography variant="h4">ALJ COPY PRINT AND GENERAL MERCHANDISE</Typography>
 
       <Stack direction="row" spacing={0.5}>
         <Typography variant="body2">New user?</Typography>

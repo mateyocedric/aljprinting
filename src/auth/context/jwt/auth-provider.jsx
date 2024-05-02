@@ -1,3 +1,5 @@
+
+import axios2 from 'axios';
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, useReducer, useCallback } from 'react';
 
@@ -61,7 +63,10 @@ export function AuthProvider({ children }) {
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
-        const response = await axios.get(endpoints.auth.me);
+        // const response = await axios.get("http://127.0.0.1:8000/api/api/auth/me");
+
+        const response = await axios2.get(`https://alj-django.onrender.com/api/api/auth/me?id=${accessToken}`);
+        // const response = await axios2.get(`http://127.0.0.1:8000/api/api/auth/me?id=${accessToken}`);
 
         const { user } = response.data;
 
@@ -104,9 +109,14 @@ export function AuthProvider({ children }) {
       password,
     };
 
-    const response = await axios.post(endpoints.auth.login, data);
 
+    // const response = await axios.post(endpoints.auth.login, data);
+    const response = await axios.post("https://alj-django.onrender.com/api/user-login/", data);
+    // const response = await axios.post("http://127.0.0.1:8000/api/user-login/", data);
+    
+    
     const { accessToken, user } = response.data;
+    localStorage.setItem("user_id",user.id)
 
     setSession(accessToken);
 

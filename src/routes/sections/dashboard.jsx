@@ -16,6 +16,8 @@ const CategoryListPage = lazy(() => import('src/pages/dashboard/category-list'))
 const ProductListPage = lazy(() => import('src/pages/dashboard/product-list'));
 const PosPage = lazy(() => import('src/pages/dashboard/pos'));
 const SalesPage = lazy(() => import('src/pages/dashboard/sales'));
+const InventoryPage = lazy(() => import('src/pages/dashboard/inventory'));
+const UpdatePasswordPage = lazy(() => import('src/pages/dashboard/update-password'));
 export const dashboardRoutes = [
   {
     path: 'dashboard',
@@ -34,6 +36,8 @@ export const dashboardRoutes = [
       { path: 'product-list', element: <ProductListPage /> },
       { path: 'pos', element: <PosPage /> },
       { path: 'sales', element: <SalesPage /> },
+      { path: 'inventory', element: <InventoryPage /> },
+      { path: 'update-password', element: <UpdatePasswordPage /> },
     ],
   },
 ];

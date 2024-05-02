@@ -80,6 +80,11 @@ export function useNavData() {
             path: paths.dashboard.general.sales,
             icon: ICONS.booking,
           },
+          {
+            title: t('Inventory'),
+            path: paths.dashboard.general.inventory,
+            icon: ICONS.booking,
+          },
         ],
       },
     ],

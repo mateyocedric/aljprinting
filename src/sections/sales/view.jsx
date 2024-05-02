@@ -1,28 +1,208 @@
-import Box from '@mui/material/Box';
-import { alpha } from '@mui/material/styles';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 
+import axios from 'axios';
+import { PDFViewer } from "@react-pdf/renderer"
+import React, { useState, useEffect } from 'react';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import Divider from '@mui/material/Divider';
+import { DataGrid } from '@mui/x-data-grid';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import DialogTitle from '@mui/material/DialogTitle';
+import ExpandIcon from '@mui/icons-material/Expand';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+
+// eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
+import PDFfile from 'src/components/PDFFile';
 import { useSettingsContext } from 'src/components/settings';
+
 
 // ----------------------------------------------------------------------
 
 export default function SalesView() {
+  const columns = [
+    { field: 'date', headerName: 'Date', flex: 1 },
+    {
+      field: 'id',
+      headerName: 'Order Id',
+      flex: 1,
+    },
+    {
+      field: 'grand_total',
+      headerName: 'Grand Total (Php)',
+      flex: 1,
+    },
+    {
+      field: 'tendered_amount',
+      headerName: 'Tendered Amount (Php)',
+      flex: 1,
+    },
+    {
+      field: 'amount_change',
+      headerName: 'Amount Change (Php)',
+      flex: 1,
+    },
+
+    {
+      field: 'renderCell',
+      headerName: 'Actions',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      renderCell: ({ row }) =>
+        <IconButton aria-label="delete" size="small" onClick={() => handleCard(row)}>
+          <ExpandIcon fontSize="inherit" />
+        </IconButton>,
+    }
+  ];
+
+  const cartDataColumns = [
+    {
+      field: 'product_id',
+      headerName: 'item',
+      flex: 1,
+    },
+    {
+      field: 'price',
+      headerName: 'price',
+      flex: 1,
+    },
+    {
+      field: 'qty',
+      headerName: 'quantity',
+      flex: 1,
+    },
+    {
+      field: 'total',
+      headerName: 'total',
+      flex: 1,
+    }
+  ];
+
+  const [rows, setData] = useState([]);
+  const [selectRow, setSelectRow] = useState('');
+  const [isPrint, setIsPrint] = useState(true)
+
+  const togglePrint = () => {
+    setIsPrint(!isPrint);
+  };
+
+  useEffect(() => {
+    // Make a GET request when the component mounts
+    axios.get('https://alj-django.onrender.com/api/sales-get-all/')
+      .then(response => {
+        // Set the fetched data to the state variable
+        console.log(response.data)
+        setData(response.data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+
+
+  const [cartData, setCartData] = useState([]);
+  const handleCard = async (row) => {
+
+    console.log(row)
+    setSelectRow(row)
+    setCheckOut(true)
+    try {
+      const aaa = 'https://alj-django.onrender.com/api/sales-item-get/?id='
+      const response = await axios.get(aaa.concat(row.id))
+      console.log("respone", response.data)
+      setCartData(response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const [isCheckOut, setCheckOut] = useState(false)
+
+  const handleCheckoutOnClose = () => {
+    setCheckOut(false)
+    setIsPrint(true)
+  }
+
   const settings = useSettingsContext();
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Typography variant="h4"> Sales </Typography>
-      <Box
-        sx={{
-          mt: 5,
-          width: 1,
-          height: 320,
-          borderRadius: 2,
-          bgcolor: (theme) => alpha(theme.palette.grey[500], 0.04),
-          border: (theme) => `dashed 1px ${theme.palette.divider}`,
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
         }}
+        pageSizeOptions={[10]}
+
+        disableRowSelectionOnClick
       />
+      <Dialog
+        open={isCheckOut}
+        fullWidth
+        onClose={handleCheckoutOnClose}
+        title="Receipt"
+      >
+        <Box>
+          {isPrint ? (
+            <Box> <DialogTitle>Receipt</DialogTitle>
+              <DialogContent>
+
+                <DataGrid
+                  rows={cartData}
+                  columns={cartDataColumns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 10,
+                      },
+                    },
+                  }}
+                  pageSizeOptions={[10]}
+
+                  disableRowSelectionOnClick
+                />
+
+                <Typography variant="h6">CASH : {selectRow.tendered_amount}</Typography>
+                <Typography variant="h6">TOTAL :{selectRow.grand_total}</Typography>
+                <Divider />
+                <Typography variant="h6">CHANGE :{selectRow.amount_change}</Typography>
+              </DialogContent> </Box>) : (<PDFViewer style={{ width: "100%", height: "800px" }}>
+                {console.log("receiptData", selectRow)}
+                <PDFfile data={{
+                  id: selectRow.id,
+                  date: selectRow.date,
+                  time: '12:30 PM',
+                  items: cartData,
+                  total: selectRow.grand_total,
+                  cash: selectRow.tendered_amount,
+                  change: selectRow.amount_change
+                }} />
+              </PDFViewer>)}
+
+          <DialogActions>
+            <Button autoFocus onClick={handleCheckoutOnClose}>
+              Cancel
+            </Button>
+            <Button onClick={() => togglePrint()}>Print</Button>
+          </DialogActions>
+
+        </Box>
+
+      </Dialog>
+
+
     </Container>
   );
 }
