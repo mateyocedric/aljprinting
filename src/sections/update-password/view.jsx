@@ -1,32 +1,30 @@
-import * as Yup from 'yup';
 import axios from 'axios';
+import * as Yup from 'yup';
+import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Container,
-  Typography,
-  Stack,
-  CardContent,
-  Card,
-  Box,
-  CardHeader
-} from '@mui/material';
 
 import LoadingButton from '@mui/lab/LoadingButton';
+import {
+  Box,
+  Card,
+  Stack,
+  Container,
+  Typography,
+  CardHeader,
+  CardContent
+} from '@mui/material';
 
 import FormProvider, {
   RHFTextField,
 } from '../../components/hook-form'
-
-
-import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
 export default function UpdatePasswordView() {
 
   const { enqueueSnackbar } = useSnackbar();
-  
+
 
   const UpdateUserSchema = Yup.object().shape({
     password: Yup.string()
@@ -66,7 +64,7 @@ export default function UpdatePasswordView() {
         password: data.password
       }
       console.log(send)
-      
+
       await axios.post('https://alj-django.onrender.com/api/user-update/', send);
       // await axios.post('http://127.0.0.1:8000/api/user-update/', send);
 

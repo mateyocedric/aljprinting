@@ -1,21 +1,13 @@
 
+import axios from 'axios';
+import { PDFViewer } from "@react-pdf/renderer"
 import React, { useState, useEffect } from 'react';
 
-import { DataGrid } from '@mui/x-data-grid';
-import { useSettingsContext } from 'src/components/settings';
-import { ConfirmDialog } from 'src/components/custom-dialog';
-import {PDFViewer} from "@react-pdf/renderer"
-
-
-
-
 import Box from '@mui/material/Box';
-import axios from 'axios';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import Iconify from 'src/components/iconify/iconify';
-import PDFfile from 'src/components/PDFFile';
+import { DataGrid } from '@mui/x-data-grid';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -23,6 +15,11 @@ import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 import DialogActions from '@mui/material/DialogActions';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
+import PDFfile from 'src/components/PDFFile';
+import Iconify from 'src/components/iconify/iconify';
+import { useSettingsContext } from 'src/components/settings';
+import { ConfirmDialog } from 'src/components/custom-dialog';
 
 
 
@@ -49,19 +46,18 @@ export default function PosView() {
   const [selectIdCount, setSelectIdCount] = useState(1);
   const [selectCash, setCash] = useState('');
   const [change, setChange] = useState(0);
-  const [isPrint , setIsPrint] = useState(false)
-  const [response , setResponse] = useState('')
+  const [isPrint, setIsPrint] = useState(false)
+  const [response, setResponse] = useState('')
 
-  
+
 
 
 
   useEffect(() => {
     // Make a GET request when the component mounts
     axios.get(url)
+      // eslint-disable-next-line no-shadow
       .then(response => {
-        // Set the fetched data to the state variable
-        // setProducts(response.data);
 
         let arr = response.data
         arr = arr.map(item => (
@@ -73,18 +69,18 @@ export default function PosView() {
           }
         ));
 
-        arr = arr.sort( (a, b) => {
+        arr = arr.sort((a, b) => {
           // Convert both names to lowercase
           const nameA = a.label.toLowerCase();
           const nameB = b.label.toLowerCase();
-          
+
           // Compare the names
           if (nameA < nameB) return -1;
           if (nameA > nameB) return 1;
           return 0; // Names are equal
         })
         setProducts(arr)
-        
+
       })
       .catch(error => {
         // Handle error
@@ -97,19 +93,20 @@ export default function PosView() {
     setIsCheckOut(false);
   };
 
-  const handleCheckout = async() => {
-    try{
-      const response = await axios.post('https://alj-django.onrender.com/api/sales-add/',{
-        sales:{
-          grand_total:cartTotal,
-          tendered_amount:selectCash,
+  const handleCheckout = async () => {
+    try {
+      // eslint-disable-next-line no-shadow
+      const response = await axios.post('https://alj-django.onrender.com/api/sales-add/', {
+        sales: {
+          grand_total: cartTotal,
+          tendered_amount: selectCash,
           amount_change: selectCash - cartTotal
         },
-        cart:rows
+        cart: rows
       })
       setResponse(response.data)
       console.log(response.data)
-    }catch( error) {
+    } catch (error) {
       console.log(error);
     }
     console.log('asdf')
@@ -117,7 +114,7 @@ export default function PosView() {
     setIsPrint(true)
   };
 
-  const handleIsPrintClose = () =>{
+  const handleIsPrintClose = () => {
     setCash('')
     setCartTotal(0)
     setRows([])
@@ -138,8 +135,7 @@ export default function PosView() {
     {
       field: 'price',
       headerName: 'Price',
-      flex: 1,
-      // valueGetter:  (value,row) =>{  return "Php" + value }
+      flex: 1
     },
     {
       field: 'quantity',
@@ -169,10 +165,10 @@ export default function PosView() {
   const handleQuantityChange = event => {
     setQuantity(event.target.value);
   };
-  
+
   const handleCashChange = event => {
     setCash(event.target.value);
-    setChange(  event.target.value - cartTotal)
+    setChange(event.target.value - cartTotal)
   };
 
   const deleteRow = (idToDelete) => {
@@ -237,9 +233,9 @@ export default function PosView() {
               renderInput={(params) => <TextField {...params} label="Product" />}
             />
             <TextField id="outlined-basic" label="Quantity" variant="outlined" type="number" value={selectQuantity} onChange={handleQuantityChange} />
-            <Button 
+            <Button
               variant="outlined"
-              disabled={ (selectProduct === '' || selectQuantity ==='') } 
+              disabled={(selectProduct === '' || selectQuantity === '')}
               onClick={addToCart}
             >ADD ITEM</Button>
 
@@ -287,19 +283,19 @@ export default function PosView() {
               </Typography>
             ) : (
               <Box>
-                
+
 
                 <Typography variant="h6">
                   Are you sure want to checkout?
                 </Typography>
 
-                
+
 
                 <Typography variant="h6">
                   Total: {cartTotal}
                 </Typography>
-                <TextField id="outlined-basic" label="Enter Cash" variant="outlined" type="number" value={selectCash} onChange={handleCashChange} /> 
-                
+                <TextField id="outlined-basic" label="Enter Cash" variant="outlined" type="number" value={selectCash} onChange={handleCashChange} />
+
                 <Typography variant="h6">
                   Change : {change}
                 </Typography>
@@ -311,7 +307,7 @@ export default function PosView() {
         }
         action={
           <Button
-            disabled={ selectCash - cartTotal <= 0  }
+            disabled={selectCash - cartTotal <= 0}
             variant="contained"
             color="error"
             onClick={() => {
@@ -327,30 +323,30 @@ export default function PosView() {
         fullWidth
         onClose={handleIsPrintClose}
         title="Receipt"
-      >  
-          <Box>
-           
-           <PDFViewer style={{ width: "100%", height: "800px" }}>
-              <PDFfile data={{
-                id: response.id,
-                date: response.date,
-                time: '12:30 PM',
-                items: rows,
-                total: cartTotal,
-                cash: selectCash,
-                change: selectCash - cartTotal
-              }} />
-            </PDFViewer>
-          
-              <DialogActions>
-                <Button autoFocus onClick={ handleIsPrintClose}>
-                  Cancel
-                </Button>
-              </DialogActions>
-            
-          </Box>
-        
-      </Dialog> 
+      >
+        <Box>
+
+          <PDFViewer style={{ width: "100%", height: "800px" }}>
+            <PDFfile data={{
+              id: response.id,
+              date: response.date,
+              time: '12:30 PM',
+              items: rows,
+              total: cartTotal,
+              cash: selectCash,
+              change: selectCash - cartTotal
+            }} />
+          </PDFViewer>
+
+          <DialogActions>
+            <Button autoFocus onClick={handleIsPrintClose}>
+              Cancel
+            </Button>
+          </DialogActions>
+
+        </Box>
+
+      </Dialog>
     </Container>
   );
 }
