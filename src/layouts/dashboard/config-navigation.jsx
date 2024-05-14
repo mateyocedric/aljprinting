@@ -65,6 +65,10 @@ export function useNavData() {
           title: t('Pos'),
           path: paths.dashboard.general.pos,
           icon: ICONS.banking,
+        },{
+          title: t('Sales'),
+          path: paths.dashboard.general.sales,
+          icon: ICONS.booking,
         }] :  
         [
           {
