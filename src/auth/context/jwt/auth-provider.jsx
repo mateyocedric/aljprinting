@@ -117,7 +117,10 @@ export function AuthProvider({ children }) {
     
     const { accessToken, user } = response.data;
     localStorage.setItem("user_id",user.id)
+    localStorage.setItem("user_role",user.role)
+    localStorage.setItem("user_display_name",user.displayName)
 
+    
     setSession(accessToken);
 
     dispatch({

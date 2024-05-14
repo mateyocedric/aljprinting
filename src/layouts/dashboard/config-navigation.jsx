@@ -46,6 +46,7 @@ const ICONS = {
 // ----------------------------------------------------------------------
 
 export function useNavData() {
+  const role = localStorage.getItem("user_role");
   const { t } = useTranslate();
 
   const data = useMemo(
@@ -54,7 +55,18 @@ export function useNavData() {
       // ----------------------------------------------------------------------
       {
         subheader: t('overview'),
-        items: [
+        items: role==="user"?  
+        [{
+          title: t('Home'),
+          path: paths.dashboard.root,
+          icon: ICONS.dashboard,
+        },
+        {
+          title: t('Pos'),
+          path: paths.dashboard.general.pos,
+          icon: ICONS.banking,
+        }] :  
+        [
           {
             title: t('Home'),
             path: paths.dashboard.root,
@@ -85,10 +97,10 @@ export function useNavData() {
             path: paths.dashboard.general.inventory,
             icon: ICONS.booking,
           },
-        ],
+        ] ,
       },
     ],
-    [t]
+    [t, role]
   );
 
   return data;
