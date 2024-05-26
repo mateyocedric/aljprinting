@@ -16,7 +16,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
-
 import { useSettingsContext } from 'src/components/settings';
 // ----------------------------------------------------------------------
 
@@ -111,7 +110,17 @@ export default function PosView() {
         stock:textInputStock,
 
       })
-      
+
+      const rowIndex = rows.findIndex(row => row.id === rowData.id);
+    
+      // Make a shallow copy of the rows array
+      const updatedRows = [...rows];
+
+      // Update the data of the row at rowIndex
+      updatedRows[rowIndex] = { ...updatedRows[rowIndex], stock: textInputStock };
+
+
+      setRows(updatedRows);
       console.log(response)
     }catch( error) {
       console.log(error);

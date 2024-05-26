@@ -16,12 +16,16 @@ import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 import DialogActions from '@mui/material/DialogActions';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ExpandIcon from '@mui/icons-material/Expand';
 
 // eslint-disable-next-line import/no-named-as-default-member
 import PDFfile from 'src/components/PDFFile'
 import Iconify from 'src/components/iconify/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import { ConfirmDialog } from 'src/components/custom-dialog';
+
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
 
 
 
@@ -50,9 +54,14 @@ export default function PosView() {
   const [change, setChange] = useState(0);
   const [isPrint, setIsPrint] = useState(false)
   const [response, setResponse] = useState('')
+  const [editQty, setEditQty] = useState(false)
 
 
+  const [textInputNameQtyEdit , setTextInputNameQtyEdit] = useState(0)
 
+  const handleTextInputqtyEdit  = event => {
+    setTextInputNameQtyEdit(event.target.value);
+  }
 
 
   useEffect(() => {
@@ -155,9 +164,17 @@ export default function PosView() {
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       renderCell: ({ row }) =>
+        <>
         <IconButton aria-label="delete" size="small" onClick={() => deleteRow(row)}>
           <DeleteOutlineIcon fontSize="inherit" />
         </IconButton>,
+        <IconButton aria-label="delete" size="small" onClick={() => saveRow(row)}>
+          <ExpandIcon fontSize="inherit" />
+        </IconButton>,
+        </>
+
+
+
     }
   ];
 
@@ -181,6 +198,24 @@ export default function PosView() {
     console.log(rows)
     setQuantity('')
     setSelectProduct('')
+  }
+
+  const [thisRow , setThisRow] = useState('')
+  const saveRow = (row) => {
+    setEditQty(true)
+    setThisRow(row)
+
+  }
+
+  const handleQtyEdit = () =>{
+    console.log(thisRow)
+
+    const rowIndex = rows.findIndex(row => row.id === thisRow.id);
+    const updatedRows = [...rows];
+    updatedRows[rowIndex] = { ...updatedRows[rowIndex], quantity: textInputNameQtyEdit };
+    setRows(updatedRows);
+
+    setEditQty(false)
   }
 
   const addToCart = () => {
@@ -349,6 +384,29 @@ export default function PosView() {
         </Box>
 
       </Dialog>
+
+
+      <Dialog
+        open={editQty}
+        onClose={()=>setEditQty(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+
+        <DialogTitle id="alert-dialog-title">
+          Edit Quantity
+        </DialogTitle>
+
+        <DialogContent>
+          <Stack spacing={1} direction='row' mt={2}>
+            <TextField id="outlined-basic" label="Quantity" variant="outlined" value={textInputNameQtyEdit}  onChange= {handleTextInputqtyEdit}/>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleQtyEdit}>Update</Button>
+        </DialogActions>
+      </Dialog>
+
     </Container>
   );
 }

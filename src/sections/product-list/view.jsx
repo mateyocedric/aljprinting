@@ -154,8 +154,15 @@ export default function ProductListView() {
         name:textInputName,
         description:textInputDesc,
         price:textInputPrice,
-
       })
+
+
+      const rowIndex = rows.findIndex(row => row.id === rowData.id);
+      const updatedRows = [...rows];
+      updatedRows[rowIndex] = { ...updatedRows[rowIndex], name: textInputName , description:textInputDesc , price: textInputPrice , category_id: selectCategory.label };
+      console.log("category" , selectCategory)
+      setData(updatedRows);
+
       
       console.log(response)
     }catch( error) {
