@@ -215,6 +215,7 @@ export default function PosView() {
     updatedRows[rowIndex] = { ...updatedRows[rowIndex], quantity: textInputNameQtyEdit , total: textInputNameQtyEdit * thisRow.price };
     setRows(updatedRows);
     setCartTotal(  (cartTotal - thisRow.total) + textInputNameQtyEdit * thisRow.price)
+    setThisRow({ ...updatedRows[rowIndex], quantity: textInputNameQtyEdit , total: textInputNameQtyEdit * thisRow.price })
 
     setEditQty(false)
   }
