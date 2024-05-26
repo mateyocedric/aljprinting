@@ -212,7 +212,7 @@ export default function PosView() {
 
     const rowIndex = rows.findIndex(row => row.id === thisRow.id);
     const updatedRows = [...rows];
-    updatedRows[rowIndex] = { ...updatedRows[rowIndex], quantity: textInputNameQtyEdit };
+    updatedRows[rowIndex] = { ...updatedRows[rowIndex], quantity: textInputNameQtyEdit , total: textInputNameQtyEdit * thisRow.price };
     setRows(updatedRows);
 
     setEditQty(false)
