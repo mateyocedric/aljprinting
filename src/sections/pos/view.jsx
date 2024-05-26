@@ -204,6 +204,7 @@ export default function PosView() {
   const saveRow = (row) => {
     setEditQty(true)
     setThisRow(row)
+    setTextInputNameQtyEdit(row.quantity)
 
   }
 
@@ -216,6 +217,7 @@ export default function PosView() {
     setRows(updatedRows);
     setCartTotal(  (cartTotal - thisRow.total) + textInputNameQtyEdit * thisRow.price)
     setThisRow({ ...updatedRows[rowIndex], quantity: textInputNameQtyEdit , total: textInputNameQtyEdit * thisRow.price })
+    
 
     setEditQty(false)
   }
